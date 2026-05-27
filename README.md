@@ -1,3 +1,4 @@
+
 # ⬡ A.R.I.S. — AI Security Dashboard
 
 **A.R.I.S. (AI Response & Intelligence System)** is a locally hosted cybersecurity dashboard powered by a local LLM via Ollama. It summarizes real-time threat news, analyzes system logs for suspicious activity, and provides an interactive cybersecurity assistant — all running privately on your own machine with no data leaving your system.
@@ -16,7 +17,7 @@ Paste in system log entries and A.R.I.S. will analyze them for suspicious activi
 
 ### Security Chatbot
 An interactive chat assistant named A.R.I.S. that answers cybersecurity questions, explains concepts, and helps with security research — running entirely on your local machine.
-
+<img width="1512" height="857" alt="Screenshot 2026-05-27 at 3 30 10 PM" src="https://github.com/user-attachments/assets/78c800a4-79b7-46a3-b1de-7eecd7729171" />
 ---
 
 ## Tech Stack
