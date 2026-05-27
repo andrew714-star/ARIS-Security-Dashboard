@@ -94,5 +94,4 @@ This project was built to combine Python development with practical cybersecurit
 ## Author
 
 **Andrew Ruiz**
-Cybersecurity Professional | CompTIA Security+ | Google Cybersecurity Certificate
 [LinkedIn](https://linkedin.com/in/andrew-ruiz-491320366)
