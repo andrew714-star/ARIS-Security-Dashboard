@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A.R.I.S — Security Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
+
+  :root {
+    --bg:         #060a0e;
+    --bg2:        #0a0f15;
+    --bg3:        #0d1420;
+    --panel:      #0d1520;
+    --border:     #141c28;
+    --border2:    #1e2d3a;
+    --green:      #00e587;
+    --green-dim:  #00804d;
+    --green-glow: rgba(0,229,135,0.15);
+    --purple:     #c080ff;
+    --purple-dim: #6030a0;
+    --text:       #cdd9e5;
+    --text-dim:   #4a6070;
+    --text-mid:   #7a9ab0;
+    --red:        #ff4060;
+    --sidebar-w:  64px;
+    --header-h:   62px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    overflow: hidden;
+  }
+
+  /* ── Scanline overlay ─────────────────────────────── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.07) 2px,
+      rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── Layout ───────────────────────────────────────── */
+  #app {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Sidebar ──────────────────────────────────────── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--bg);
+    background-color: #1e2d3a;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+  }
+
+  #logo {
+    width: 100%;
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  #logo svg {
+    width: 28px; height: 28px;
+    filter: drop-shadow(0 0 6px var(--green));
+  }
+
+  #nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 8px;
+    width: 100%;
+  }
+
+  .nav-btn {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s ease;
+    position: relative;
+  }
+
+  .nav-btn img {
+    width: 30px; height: 30px;
+    transition: opacity 0.18s ease, filter 0.18s ease;
+    filter: none;
+  }
+
+  .nav-btn:hover img,
+  .nav-btn.active img {
+    opacity: 1;
+    filter: invert(74%) sepia(70%) saturate(500%) hue-rotate(100deg) brightness(1.1);
+  }
+
+  .nav-btn:hover {
+    background: rgba(0,229,135,0.06);
+    border-color: var(--border2);
+  }
+
+  .nav-btn.active {
+    background: rgba(0,229,135,0.10);
+    border-color: var(--green-dim);
+    box-shadow: 0 0 12px var(--green-glow);
+  }
+
+  .nav-tooltip {
+    position: absolute;
+    left: calc(100% + 10px);
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    letter-spacing: 1px;
+  }
+
+  .nav-btn:hover .nav-tooltip { opacity: 1; }
+
+  /* ── Right column ─────────────────────────────────── */
+  #right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── Header ───────────────────────────────────────── */
+  #header {
+    height: var(--header-h);
+    min-height: var(--header-h);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  #header-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 18px;
+    color: var(--green);
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(0,229,135,0.4);
+  }
+
+  #header-sep {
+    width: 1px;
+    height: 28px;
+    background: var(--border2);
+  }
+
+  #header-meta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1.5px;
+    line-height: 1.8;
+  }
+
+  #header-status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── Pages ────────────────────────────────────────── */
+  #pages {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .page {
+    position: absolute; inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: 20px 24px;
+    gap: 14px;
+    overflow: hidden;
+  }
+
+  .page.active { display: flex; }
+
+  /* ── Section label ───────────────────────────────── */
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── Buttons ──────────────────────────────────────── */
+  .btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    padding: 9px 20px;
+    border-radius: 7px;
+    border: 1px solid var(--border2);
+    background: var(--bg3);
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .btn:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(0,229,135,0.05);
+    box-shadow: 0 0 12px var(--green-glow);
+  }
+
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .btn-green {
+    border-color: var(--green-dim);
+    color: var(--green);
+    background: rgba(0,229,135,0.06);
+  }
+
+  .btn-green:hover {
+    background: rgba(0,229,135,0.12);
+    box-shadow: 0 0 16px var(--green-glow);
+  }
+
+  .btn-purple {
+    border-color: var(--purple-dim);
+    color: var(--purple);
+    background: rgba(192,128,255,0.06);
+  }
+
+  .btn-purple:hover {
+    background: rgba(192,128,255,0.12);
+    box-shadow: 0 0 16px rgba(192,128,255,0.2);
+    border-color: var(--purple);
+    color: var(--purple);
+  }
+
+  .btn-ghost {
+    border-color: transparent;
+    background: transparent;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--border2);
+    color: var(--text);
+    background: var(--bg3);
+    box-shadow: none;
+  }
+
+  /* ── Panels / textareas ───────────────────────────── */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--text);
+    overflow-y: auto;
+  }
+
+  .panel:focus-within {
+    border-color: var(--green-dim);
+    box-shadow: 0 0 0 1px var(--green-dim), 0 0 20px var(--green-glow);
+  }
+
+  textarea.panel {
+    resize: none;
+    outline: none;
+    width: 100%;
+    color: var(--text);
+    caret-color: var(--green);
+  }
+
+  textarea.panel::placeholder { color: var(--text-dim); }
+
+  .panel::-webkit-scrollbar { width: 5px; }
+  .panel::-webkit-scrollbar-track { background: transparent; }
+  .panel::-webkit-scrollbar-thumb {
+    background: var(--border2);
+    border-radius: 3px;
+  }
+  .panel::-webkit-scrollbar-thumb:hover { background: var(--green-dim); }
+
+  /* ── Top bar row ──────────────────────────────────── */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* ── Input row ────────────────────────────────────── */
+  .input-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .text-input {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    caret-color: var(--green);
+  }
+
+  .text-input::placeholder { color: var(--text-dim); }
+
+  .text-input:focus {
+    border-color: var(--green-dim);
+    box-shadow: 0 0 0 1px var(--green-dim), 0 0 16px var(--green-glow);
+  }
+
+  /* ── Chat messages ────────────────────────────────── */
+  .chat-output {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .msg {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: fade-in 0.2s ease;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+  }
+
+  .msg-label.you  { color: var(--green-dim); }
+  .msg-label.aris { color: var(--purple-dim); }
+
+  .msg-body {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .msg-body.you  { color: var(--text); }
+  .msg-body.aris { color: #d0e8f0; }
+
+  .cursor {
+    display: inline-block;
+    width: 8px; height: 13px;
+    background: var(--green);
+    vertical-align: middle;
+    animation: blink 0.9s step-end infinite;
+    margin-left: 2px;
+  }
+
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* ── News articles ────────────────────────────────── */
+  .news-output { flex: 1; overflow-y: auto; }
+
+  .article {
+    margin-bottom: 22px;
+    border-left: 2px solid var(--border2);
+    padding-left: 14px;
+    animation: fade-in 0.3s ease;
+  }
+
+  .article-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .article-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--green-dim);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .article-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.5px;
+  }
+
+  .article-body {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.75;
+    color: var(--text-mid);
+    white-space: pre-wrap;
+    margin-bottom: 6px;
+  }
+
+  .article-link {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.15s;
+  }
+
+  .article-link:hover { color: var(--green); }
+
+  /* ── Status line ──────────────────────────────────── */
+  .status-line {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    padding: 2px 0;
+    min-height: 18px;
+  }
+
+  .status-line.ok  { color: var(--green-dim); }
+  .status-line.err { color: var(--red); }
+
+  /* ── Log two-pane ─────────────────────────────────── */
+  .log-panes {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .log-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  /* ── Boot animation ───────────────────────────────── */
+  #boot {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    gap: 20px;
+    transition: opacity 0.5s ease;
+  }
+
+  #boot.gone { opacity: 0; pointer-events: none; }
+
+  #boot-logo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 36px;
+    color: var(--green);
+    letter-spacing: 8px;
+    text-shadow: 0 0 30px rgba(0,229,135,0.6);
+    animation: flicker 0.5s ease forwards;
+  }
+
+  #boot-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+  }
+
+  #boot-bar-wrap {
+    width: 260px;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  #boot-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    transition: width 0.8s ease;
+  }
+
+  @keyframes flicker {
+    0%   { opacity: 0; }
+    60%  { opacity: 1; }
+    70%  { opacity: 0.4; }
+    80%  { opacity: 1; }
+    90%  { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Boot screen -->
+<div id="boot">
+  <div id="boot-logo">⬡ A.R.I.S</div>
+  <div id="boot-sub">ADAPTIVE RECON &amp; INTELLIGENCE SYSTEM</div>
+  <div id="boot-bar-wrap"><div id="boot-bar"></div></div>
+</div>
+
+<div id="app">
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <div id="logo">
+      <!-- hexagon SVG logo -->
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="50,5 93,27.5 93,72.5 50,95 7,72.5 7,27.5"
+                 stroke="#00e587" stroke-width="5" fill="rgba(0,229,135,0.06)"/>
+        <polygon points="50,18 82,35.5 82,64.5 50,82 18,64.5 18,35.5"
+                 stroke="#00e587" stroke-width="2" fill="none" opacity="0.3"/>
+        <circle cx="50" cy="50" r="8" fill="#00e587" opacity="0.9"/>
+      </svg>
+    </div>
+    <div id="nav">
+      <button class="nav-btn active" data-page="news" onclick="switchPage('news', this)">
+        <img src="../static/icons/news.png" alt="News">
+        <span class="nav-tooltip">CYBER NEWS</span>
+      </button>
+      <button class="nav-btn" data-page="log" onclick="switchPage('log', this)">
+        <img src="../static/icons/log.png" alt="Log">
+        <span class="nav-tooltip">LOG ANALYZER</span>
+      </button>
+      <button class="nav-btn" data-page="chat" onclick="switchPage('chat', this)">
+        <img src="../static/icons/chat.png" alt="Chat">
+        <span class="nav-tooltip">AI CHAT</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Right column -->
+  <div id="right">
+
+    <!-- Header -->
+    <div id="header">
+      <div id="header-title">A.R.I.S</div>
+      <div id="header-sep"></div>
+      <div id="header-meta">
+        SECURITY DASHBOARD<br>
+        {{ model | upper }} &nbsp;·&nbsp; {{ date }}
+      </div>
+      <div id="header-status">
+        <div class="status-dot"></div>
+        ONLINE
+      </div>
+    </div>
+
+    <!-- Pages -->
+    <div id="pages">
+
+      <!-- ── NEWS ── -->
+      <div class="page active" id="page-news">
+        <div class="top-bar">
+          <span class="section-label">// latest cybersecurity headlines — summarized by local ai</span>
+          <button class="btn btn-green" id="news-btn" onclick="fetchNews()">FETCH &amp; SUMMARIZE</button>
+        </div>
+        <div class="status-line" id="news-status"></div>
+        <div class="panel news-output" id="news-output">
+          <span style="color:var(--text-dim); font-family:'Share Tech Mono',monospace; font-size:12px;">
+            Press FETCH &amp; SUMMARIZE to load today's security news...
+          </span>
+        </div>
+      </div>
+
+      <!-- ── LOG ── -->
+      <div class="page" id="page-log">
+        <span class="section-label">// paste log content below — auth.log, syslog, nginx, etc.</span>
+        <div class="log-panes">
+          <div class="log-pane">
+            <textarea class="panel" id="log-input" placeholder="Paste your log here..." style="flex:1;"></textarea>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-purple" id="log-btn" onclick="analyzeLogs()">ANALYZE LOG</button>
+              <button class="btn btn-ghost" onclick="clearLog()">CLEAR</button>
+            </div>
+          </div>
+          <div class="log-pane">
+            <span class="section-label">// analysis output</span>
+            <div class="panel" id="log-output" style="flex:1;">
+              <span style="color:var(--text-dim); font-family:'Share Tech Mono',monospace; font-size:12px;">
+                Analysis will appear here...
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CHAT ── -->
+      <div class="page" id="page-chat">
+        <span class="section-label">// ask your local ai anything about cybersecurity</span>
+        <div class="panel chat-output" id="chat-output"></div>
+        <div class="input-row">
+          <input class="text-input" id="chat-input"
+                 placeholder="e.g. What is a MITRE ATT&amp;CK framework?"
+                 onkeydown="if(event.key==='Enter') sendChat()">
+          <button class="btn btn-green" id="chat-btn" onclick="sendChat()">SEND ▶</button>
+        </div>
+      </div>
+
+    </div><!-- /pages -->
+  </div><!-- /right -->
+</div><!-- /app -->
+
+<script>
+  // ── Boot sequence ──────────────────────────────────────────────────────────
+  window.addEventListener('load', () => {
+    const bar  = document.getElementById('boot-bar');
+    const boot = document.getElementById('boot');
+    setTimeout(() => { bar.style.width = '100%'; }, 100);
+    setTimeout(() => { boot.classList.add('gone'); }, 1400);
+    setTimeout(() => { boot.remove(); }, 1900);
+
+    // Init chat
+    appendMsg('aris', `⚙  Connected to {{ model | upper }}. Ask me anything — I'm A.R.I.S, your local security AI.`);
+  });
+
+  // ── Navigation ─────────────────────────────────────────────────────────────
+  function switchPage(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ── News ───────────────────────────────────────────────────────────────────
+  function fetchNews() {
+    const btn    = document.getElementById('news-btn');
+    const output = document.getElementById('news-output');
+    const status = document.getElementById('news-status');
+    btn.disabled = true;
+    btn.textContent = 'LOADING...';
+    output.innerHTML = '';
+    status.textContent = 'Fetching feeds...';
+    status.className = 'status-line';
+
+    let currentArticleEl = null;
+    let bodyEl = null;
+
+    const es = new EventSource('/api/news');
+    es.onmessage = (e) => {
+      if (e.data === '[DONE]') {
+        es.close();
+        btn.disabled = false;
+        btn.textContent = 'FETCH & SUMMARIZE';
+        status.textContent = '✓ Done.';
+        status.className = 'status-line ok';
+        return;
+      }
+      const msg = JSON.parse(e.data);
+
+      if (msg.status) {
+        status.textContent = msg.status;
+        return;
+      }
+      if (msg.error) {
+        status.textContent = '✗ ' + msg.error;
+        status.className = 'status-line err';
+        es.close();
+        btn.disabled = false;
+        btn.textContent = 'FETCH & SUMMARIZE';
+        return;
+      }
+      if (msg.article_start) {
+        const a = msg.article_start;
+        status.textContent = `Processing ${a.index}/${a.total}: ${a.title.substring(0,60)}...`;
+        const div = document.createElement('div');
+        div.className = 'article';
+        div.innerHTML = `
+          <div class="article-header">
+            <span class="article-num">[ ${String(a.index).padStart(2,'0')} / ${a.total} ]</span>
+            <span class="article-title">${escHtml(a.title)}</span>
+          </div>
+          <div class="article-body"></div>
+          <a class="article-link" href="${escHtml(a.link)}" target="_blank">${escHtml(a.link)}</a>
+        `;
+        output.appendChild(div);
+        bodyEl = div.querySelector('.article-body');
+        currentArticleEl = div;
+        return;
+      }
+      if (msg.article_end) {
+        bodyEl = null;
+        return;
+      }
+      if (msg.token && bodyEl) {
+        bodyEl.textContent += msg.token;
+        output.scrollTop = output.scrollHeight;
+      }
+    };
+    es.onerror = () => {
+      es.close();
+      btn.disabled = false;
+      btn.textContent = 'FETCH & SUMMARIZE';
+      status.textContent = '✗ Connection error.';
+      status.className = 'status-line err';
+    };
+  }
+
+  // ── Log Analyzer ──────────────────────────────────────────────────────────
+  function analyzeLogs() {
+    const logText = document.getElementById('log-input').value.trim();
+    const output  = document.getElementById('log-output');
+    const btn     = document.getElementById('log-btn');
+    if (!logText) {
+      output.textContent = '⚠ Please paste some log content first.';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'ANALYZING...';
+    output.textContent = '';
+
+    fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ log: logText })
+    }).then(() => {});
+
+    const es = new EventSource('/api/analyze-stream?' + new URLSearchParams({ log: logText.substring(0,50) }));
+
+    // Use fetch + ReadableStream for POST streaming
+    streamPost('/api/analyze', { log: logText }, output, () => {
+      btn.disabled = false;
+      btn.textContent = 'ANALYZE LOG';
+    });
+  }
+
+  function clearLog() {
+    document.getElementById('log-input').value = '';
+    document.getElementById('log-output').textContent = 'Analysis will appear here...';
+    document.getElementById('log-output').style.color = 'var(--text-dim)';
+  }
+
+  // ── Chat ───────────────────────────────────────────────────────────────────
+  function sendChat() {
+    const input = document.getElementById('chat-input');
+    const btn   = document.getElementById('chat-btn');
+    const msg   = input.value.trim();
+    if (!msg) return;
+
+    input.value = '';
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    appendMsg('you', msg);
+    const arisEl = appendMsg('aris', '');
+    const bodyEl = arisEl.querySelector('.msg-body');
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    bodyEl.appendChild(cursor);
+
+    streamPost('/api/chat', { message: msg }, null, () => {
+      cursor.remove();
+      btn.disabled = false;
+      btn.textContent = 'SEND ▶';
+    }, (token) => {
+      cursor.before(document.createTextNode(token));
+      document.getElementById('chat-output').scrollTop = 99999;
+    });
+  }
+
+  function appendMsg(who, text) {
+    const output = document.getElementById('chat-output');
+    const div = document.createElement('div');
+    div.className = 'msg';
+    div.innerHTML = `
+      <span class="msg-label ${who}">${who === 'you' ? 'YOU' : 'A.R.I.S'}</span>
+      <span class="msg-body ${who}">${escHtml(text)}</span>
+    `;
+    output.appendChild(div);
+    output.scrollTop = 99999;
+    return div;
+  }
+
+  // ── SSE streaming over POST via fetch ─────────────────────────────────────
+  async function streamPost(url, body, outputEl, onDone, onToken) {
+    try {
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+
+      if (outputEl) {
+        outputEl.textContent = '';
+        outputEl.style.color = 'var(--text)';
+      }
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = line.slice(6).trim();
+          if (data === '[DONE]') { onDone && onDone(); return; }
+          try {
+            const msg = JSON.parse(data);
+            if (msg.token) {
+              if (outputEl) outputEl.textContent += msg.token;
+              if (onToken)  onToken(msg.token);
+            }
+            if (msg.error) {
+              if (outputEl) outputEl.textContent = '✗ ' + msg.error;
+              onDone && onDone();
+              return;
+            }
+          } catch {}
+        }
+      }
+      onDone && onDone();
+    } catch (err) {
+      if (outputEl) outputEl.textContent = '✗ ' + err.message;
+      onDone && onDone();
+    }
+  }
+
+  // ── Utils ──────────────────────────────────────────────────────────────────
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
