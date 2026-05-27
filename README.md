@@ -12,8 +12,14 @@ Built by Andrew Ruiz as part of an ongoing journey into cybersecurity and Python
 ### Cybersecurity News Summarizer
 Pulls the latest articles from live RSS feeds including BleepingComputer, The Hacker News, and the NIST National Vulnerability Database. The local AI model summarizes each article and explains why it matters — great for staying current on the threat landscape.
 
+<img width="1512" height="857" alt="Screenshot 2026-05-27 at 3 32 46 PM" src="https://github.com/user-attachments/assets/eea4a12f-b599-4f26-be13-69eac5e1f255" />
+
+
 ### AI Log Analyzer
 Paste in system log entries and A.R.I.S. will analyze them for suspicious activity, flag potential threats like failed login attempts or port scans, rate the severity (LOW / MEDIUM / HIGH), and recommend next steps.
+
+<img width="1512" height="857" alt="Screenshot 2026-05-27 at 3 32 41 PM" src="https://github.com/user-attachments/assets/82a43d1b-d250-483f-b579-6c229fed11b8" />
+
 
 ### Security Chatbot
 An interactive chat assistant named A.R.I.S. that answers cybersecurity questions, explains concepts, and helps with security research — running entirely on your local machine.
