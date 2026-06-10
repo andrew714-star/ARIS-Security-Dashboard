@@ -17,38 +17,43 @@ A unified command center that loads system vitals and threat intelligence in par
 ### Cybersecurity News Summarizer
 Pulls the latest articles from live RSS feeds including BleepingComputer, The Hacker News, and the NIST National Vulnerability Database. The local AI model summarizes each article and explains why it matters — great for staying current on the threat landscape.
 
-<img width="1512" height="860" alt="Screenshot 2026-06-10 at 1 39 48 PM" src="https://github.com/user-attachments/assets/8662f29b-c22b-410b-b93d-2c0a6dc2a603" />
+<img width="1512" height="859" alt="Screenshot 2026-06-10 at 2 05 18 PM" src="https://github.com/user-attachments/assets/130fee9c-90d8-46f5-960f-30022a144ad7" />
+
 
 ### AI Log Analyzer
 Paste in system log entries and A.R.I.S. will analyze them for suspicious activity, flag potential threats like failed login attempts or port scans, rate the severity (LOW / MEDIUM / HIGH), and recommend next steps.
 
-<img width="1512" height="860" alt="Screenshot 2026-06-10 at 1 37 47 PM" src="https://github.com/user-attachments/assets/7524f96d-266f-4a4d-8576-675070816272" />
+<img width="1512" height="859" alt="Screenshot 2026-06-10 at 2 05 38 PM" src="https://github.com/user-attachments/assets/bd58d822-b303-4b1f-94a8-795ad9d51f94" />
+
 
 ### Phishing Email Analyzer
 Paste raw email content (including headers) for threat analysis. Features a live header parser that extracts FROM and SUBJECT fields as you type, a dynamic threat score (0–10), IOC tag strip highlighting links, attachments, urgency language, IP addresses, and credential keywords, plus a color-coded threat level bar (LOW / MEDIUM / HIGH).
 
-<img width="1512" height="860" alt="Screenshot 2026-06-10 at 1 39 32 PM" src="https://github.com/user-attachments/assets/ca828ecd-6175-479c-afca-9fbca467057d" />
+<img width="1512" height="859" alt="Screenshot 2026-06-10 at 2 05 56 PM" src="https://github.com/user-attachments/assets/d73a9384-61cd-47d2-aa11-5a85f6d6f1ed" />
+
 
 ### CVE Lookup
 Look up any CVE by ID against the NIST NVD 2.0 API (no API key required). Displays CVSS score, severity rating, publication date, and references. A.R.I.S. then streams a plain-English AI explanation structured as: What It Is, How It Works, Who Is Affected, How To Fix It, and Risk Rating.
 
-<img width="1512" height="860" alt="Screenshot 2026-06-02 at 2 32 20 PM" src="https://github.com/user-attachments/assets/d29db958-bb79-4680-8e79-5672387f38b0" />
+<img width="1512" height="859" alt="Screenshot 2026-06-10 at 2 06 20 PM" src="https://github.com/user-attachments/assets/840ee591-24b1-4ddb-9d7f-6905fef07088" />
 
 
 ### IR Checklist
 Paste any alert, log excerpt, or incident description and A.R.I.S. generates a full NIST SP 800-61 incident response playbook. Output includes: Incident Classification, Severity rating, Immediate Actions (first 15 min), Short-Term Containment (first hour), Investigation Checklist, Escalation guidance, and a Lessons Learned prompt. All checklist items are interactive — click to mark complete. Export the full playbook as a .txt file.
 
-<img width="1512" height="860" alt="Screenshot 2026-06-10 at 1 40 08 PM" src="https://github.com/user-attachments/assets/2386cbae-f68d-4d5d-8d5a-ebc56ca1b979" />
+<img width="1512" height="859" alt="Screenshot 2026-06-10 at 2 06 35 PM" src="https://github.com/user-attachments/assets/d9f8dcaf-dbd7-4039-b01c-d199ca4a86ab" />
+
 
 ### Port Scanner
 A multithreaded TCP port scanner that scans localhost and private LAN ranges only. Supports four scan modes: Quick (22 key ports), Top 100, Full (all 1024 well-known ports), and Attack Surface (21 attacker-targeted ports). Streams open ports to the UI in real time with service names, risk ratings (CRITICAL / HIGH / MEDIUM / LOW), and banner grabbing. Follows with an AI-generated attack surface assessment and hardening recommendations.
-<img width="1512" height="860" alt="Screenshot 2026-06-10 at 1 40 20 PM" src="https://github.com/user-attachments/assets/55fa2189-5739-460e-92d7-231fb372d503" />
+
+<img width="1512" height="859" alt="Screenshot 2026-06-10 at 2 06 50 PM" src="https://github.com/user-attachments/assets/91bd6de6-e434-4f3d-bbf5-7d558176420c" />
 
 
 ### Security Chatbot
 An interactive chat assistant named A.R.I.S. that answers cybersecurity questions, explains concepts, and helps with security research — running entirely on your local machine.
 
-<img width="1512" height="860" alt="Screenshot 2026-06-10 at 1 38 04 PM" src="https://github.com/user-attachments/assets/39946687-b819-4cdb-8718-b6d967ff81aa" />
+<img width="1512" height="859" alt="Screenshot 2026-06-10 at 2 07 06 PM" src="https://github.com/user-attachments/assets/a7dde526-18be-44ff-afb0-5f6dc4f2b3eb" />
 
 ---
 
