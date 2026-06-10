@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -65,7 +65,7 @@
     width: var(--sidebar-w);
     min-width: var(--sidebar-w);
     background: var(--bg);
-    background-color: #1e2d3a;
+
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
@@ -81,8 +81,10 @@
     justify-content: center;
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
+    cursor: pointer; 
+    transition: background 0.18s;
   }
-
+  #logo:hover { background: rgba(0,229,135,0.06); }
   #logo svg {
     width: 28px; height: 28px;
     filter: drop-shadow(0 0 6px var(--green));
@@ -379,6 +381,191 @@
     box-shadow: 0 0 0 1px var(--green-dim), 0 0 16px var(--green-glow);
   }
 
+  /* ── System Page ── */
+  #page-system {
+    padding:14px 16px 14px 16px;
+    gap:12px;
+    overflow-y:auto;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(0,255,136,0.03) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 10%, rgba(0,229,255,0.03) 0%, transparent 60%),
+      var(--bg);
+  }
+  #page-system::-webkit-scrollbar { width:4px; }
+  #page-system::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+ 
+  /* page title row */
+  .cc-title-row {
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:2px;
+  }
+  .cc-title {
+    font-family:'Orbitron',monospace; font-size:20px; font-weight:700;
+    color:var(--cyan); letter-spacing:6px;
+    text-shadow:0 0 20px rgba(0,229,255,0.3);
+  }
+  .cc-date { font-size:10px; color:var(--text-dim); letter-spacing:2px; }
+ 
+  /* card with bracket corners */
+  .cc-card {
+    background: rgba(6,13,10,0.9);
+    border:1px solid var(--border2);
+    border-radius:2px;
+    position:relative;
+    padding:12px 14px;
+  }
+  .cc-card::before, .cc-card::after,
+  .cc-card .corner-br, .cc-card .corner-bl {
+    content:''; position:absolute; width:10px; height:10px; pointer-events:none;
+  }
+  .cc-card::before { top:-1px; left:-1px;
+    border-top:2px solid var(--cyan); border-left:2px solid var(--cyan); }
+  .cc-card::after  { top:-1px; right:-1px;
+    border-top:2px solid var(--cyan); border-right:2px solid var(--cyan); }
+  .cc-card .corner-br { bottom:-1px; right:-1px;
+    border-bottom:2px solid var(--cyan); border-right:2px solid var(--cyan); }
+  .cc-card .corner-bl { bottom:-1px; left:-1px;
+    border-bottom:2px solid var(--cyan); border-left:2px solid var(--cyan); }
+ 
+  .cc-card-title {
+    font-size:9px; color:var(--text-dim); letter-spacing:2px;
+    text-transform:uppercase; margin-bottom:10px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .cc-card-title .dot { width:5px; height:5px; border-radius:50%; background:var(--green);
+    box-shadow:0 0 4px var(--green); }
+ 
+  /* rows */
+  .cc-row1 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .cc-row2 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .cc-row3 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+ 
+  /* ── UPTIME CLOCK ── */
+  .uptime-clock {
+    display:flex; align-items:center; justify-content:center;
+    gap:8px; padding:8px 0 4px;
+  }
+  .clock-seg {
+    font-family:'Orbitron',monospace; font-size:32px; font-weight:900;
+    color:var(--cyan); text-shadow:0 0 20px rgba(0,229,255,0.7), 0 0 40px rgba(0,229,255,0.3);
+    min-width:44px; text-align:center;
+  }
+  .clock-colon { font-family:'Orbitron',monospace; font-size:28px; color:var(--text-dim);
+    animation:blink 1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.1} }
+  .clock-labels { display:flex; justify-content:center; gap:8px; margin-top:4px; }
+  .clock-label { font-size:8px; color:var(--text-dim); letter-spacing:1px;
+    min-width:44px; text-align:center; }
+  .uptime-status { text-align:center; margin-top:10px; font-size:9px;
+    color:var(--green); letter-spacing:2px; }
+  .uptime-status::before { content:'● '; }
+ 
+  /* ── VITALS GAUGES ── */
+  .vitals-row { display:flex; align-items:center; justify-content:space-around; padding:6px 0; }
+  .gauge-wrap { display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .gauge-label { font-size:9px; color:var(--text-dim); letter-spacing:1px; }
+  svg.gauge { overflow:visible; }
+  .gauge-val { font-family:'Orbitron',monospace; font-size:14px; font-weight:700; }
+ 
+  /* ── PROCESS TABLE ── */
+  .proc-table { width:100%; border-collapse:collapse; }
+  .proc-table th { font-size:9px; color:var(--text-dim); letter-spacing:1px;
+    padding:0 6px 6px 0; border-bottom:1px solid var(--border2); text-align:left; }
+  .proc-table td { font-size:10px; color:var(--text-mid); padding:4px 6px 4px 0;
+    border-bottom:1px solid rgba(14,31,24,0.6); }
+  .proc-table td.name { color:var(--text); }
+  .proc-table td.high { color:var(--red); }
+  .proc-table td.med  { color:var(--yellow); }
+  .proc-table td.low  { color:var(--green); }
+ 
+  /* ── DISK BARS ── */
+  .disk-row { margin-bottom:10px; }
+  .disk-meta { display:flex; justify-content:space-between; font-size:9px;
+    color:var(--text-dim); margin-bottom:3px; letter-spacing:1px; }
+  .disk-name { color:var(--text-mid); }
+  .bar-track { height:5px; background:var(--border2); border-radius:0; overflow:hidden; }
+  .bar-fill { height:100%; transition:width 0.6s ease; }
+  .bar-fill.g { background:var(--green); box-shadow:0 0 6px var(--green-glow); }
+  .bar-fill.y { background:var(--yellow); }
+  .bar-fill.r { background:var(--red); }
+ 
+  /* ── NETWORK ── */
+  .net-stat { display:flex; flex-direction:column; align-items:center; }
+  .net-val { font-family:'Orbitron',monospace; font-size:18px; font-weight:700; }
+  .net-label { font-size:8px; color:var(--text-dim); letter-spacing:1px; margin-top:2px; }
+  .iface-list { margin-top:8px; }
+  .iface-row { display:flex; justify-content:space-between; align-items:center;
+    padding:3px 0; border-bottom:1px solid rgba(14,31,24,0.5); font-size:10px; }
+  .iface-name { color:var(--text); }
+  .iface-ip   { color:var(--text-dim); }
+  .badge { font-size:8px; padding:1px 6px; border-radius:2px; letter-spacing:1px; }
+  .badge.up   { color:var(--green); border:1px solid var(--green-dim); }
+  .badge.down { color:var(--red);   border:1px solid #660020; }
+ 
+  /* ── OS INFO KV ── */
+  .kv-row { display:flex; justify-content:space-between; align-items:center;
+    padding:3px 0; border-bottom:1px solid rgba(14,31,24,0.4); }
+  .kv-key { font-size:9px; color:var(--text-dim); letter-spacing:1px; }
+  .kv-val { font-size:10px; color:var(--text); text-align:right; }
+  .kv-val.g { color:var(--green); }
+  .kv-val.c { color:var(--cyan); }
+  .kv-val.y { color:var(--yellow); }
+ 
+  /* ── REFRESH ── */
+  .cc-top-bar { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .cc-refresh { font-size:9px; color:var(--text-dim); background:none; border:none;
+    cursor:pointer; letter-spacing:1px; transition:color 0.15s; padding:0; }
+  .cc-refresh:hover { color:var(--green); }
+  .cc-status { font-size:9px; color:var(--text-dim); letter-spacing:1px; }
+  .cc-status.ok  { color:var(--green-dim); }
+  .cc-status.err { color:var(--red); }
+ 
+  /* ── OTHER PAGES ── */
+  .std-page { padding:18px 22px; gap:14px; overflow:hidden; }
+ 
+  .section-label { font-size:9px; color:var(--text-dim); letter-spacing:2px; }
+  .btn { font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:1.5px;
+    padding:8px 18px; border-radius:3px; border:1px solid var(--border2);
+    background:var(--panel); color:var(--text-mid); cursor:pointer;
+    transition:all 0.18s; white-space:nowrap; }
+  .btn:hover { border-color:var(--green); color:var(--green);
+    background:rgba(0,255,136,0.05); box-shadow:0 0 10px var(--green-glow); }
+  .btn:disabled { opacity:0.3; cursor:not-allowed; pointer-events:none; }
+  .btn-green { border-color:var(--green-dim); color:var(--green); background:rgba(0,255,136,0.05); }
+  .btn-purple { border-color:#6030a0; color:var(--purple); background:rgba(192,128,255,0.05); }
+  .btn-ghost { border-color:transparent; background:transparent; }
+  .btn-ghost:hover { border-color:var(--border2); color:var(--text); background:var(--panel); box-shadow:none; }
+ 
+  .panel { background:var(--panel); border:1px solid var(--border2); border-radius:3px;
+    padding:12px 14px; font-family:'Share Tech Mono',monospace; font-size:11px;
+    line-height:1.7; color:var(--text); overflow-y:auto; }
+  .panel:focus-within { border-color:var(--green-dim);
+    box-shadow:0 0 0 1px var(--green-dim), 0 0 16px var(--green-glow); }
+  textarea.panel { resize:none; outline:none; width:100%;
+    color:var(--text); caret-color:var(--green); }
+  textarea.panel::placeholder { color:var(--text-dim); }
+  .panel::-webkit-scrollbar { width:4px; }
+  .panel::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+  .panel::-webkit-scrollbar-thumb:hover { background:var(--green-dim); }
+ 
+  .top-bar { display:flex; align-items:center; gap:12px; }
+  .input-row { display:flex; gap:10px; align-items:center; }
+  .text-input { flex:1; background:var(--panel); border:1px solid var(--border2);
+    border-radius:3px; padding:9px 14px; font-family:'Share Tech Mono',monospace;
+    font-size:11px; color:var(--text); outline:none;
+    transition:border-color 0.18s, box-shadow 0.18s; caret-color:var(--green); }
+  .text-input::placeholder { color:var(--text-dim); }
+  .text-input:focus { border-color:var(--green-dim);
+    box-shadow:0 0 0 1px var(--green-dim), 0 0 14px var(--green-glow); }
+ 
+  .status-line { font-size:10px; color:var(--text-dim); letter-spacing:1px;
+    padding:2px 0; min-height:16px; }
+  .status-line.ok  { color:var(--green-dim); }
+  .status-line.err { color:var(--red); }
+ 
+
+
+
   /* ── Chat messages ────────────────────────────────── */
   .chat-output {
     flex: 1;
@@ -513,61 +700,286 @@
     gap: 8px;
     overflow: hidden;
   }
+  /* ── email two-pane ─────────────────────────────────── */
+  .email-panes {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .email-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+  }
 
   /* ── Boot animation ───────────────────────────────── */
   #boot {
     position: fixed; inset: 0;
     background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    gap: 20px;
-    transition: opacity 0.5s ease;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 1000; gap: 28px;
+    transition: opacity 0.6s ease;
   }
-
   #boot.gone { opacity: 0; pointer-events: none; }
 
-  #boot-logo {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 36px;
-    color: var(--green);
-    letter-spacing: 8px;
-    text-shadow: 0 0 30px rgba(0,229,135,0.6);
-    animation: flicker 0.5s ease forwards;
+  #boot-stage {
+    position: relative;
+    width: 300px;
+    height: 64px;
   }
-
+  #boot-hex-wrap {
+    position: absolute; top: 0; left: 0;
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+    opacity: 0;
+    transform: translateX(236px) translateY(-160px);
+  }
+  #boot-hex-wrap svg {
+    filter: drop-shadow(0 0 8px rgba(0,229,135,0.5));
+  }
+  #boot-name {
+    position: absolute; top: 0; left: 72px;
+    height: 64px; display: flex; align-items: center;
+    z-index: 1; gap: 0;
+  }
+  .boot-letter {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 50px; color: var(--green);
+    line-height: 1; opacity: 0;
+    transition: opacity 0.1s ease;
+  }
+  .boot-dot {
+    font-size: 28px; color: var(--green-dim);
+    align-self: flex-end; padding: 0 1px 7px;
+    opacity: 0; transition: opacity 0.1s ease;
+  }
   #boot-sub {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 3px;
+    font-size: 11px; color: var(--text-dim);
+    letter-spacing: 4px; opacity: 0;
+    transition: opacity 0.4s ease;
   }
-
   #boot-bar-wrap {
-    width: 260px;
-    height: 2px;
-    background: var(--border);
-    border-radius: 1px;
-    overflow: hidden;
+    width: 280px; height: 2px;
+    background: var(--border); border-radius: 1px;
+    overflow: hidden; opacity: 0;
+    transition: opacity 0.3s ease;
   }
-
   #boot-bar {
-    height: 100%;
-    width: 0%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    transition: width 0.8s ease;
+    height: 100%; width: 0%;
+    background: var(--green); box-shadow: 0 0 8px var(--green);
+    transition: width 0.9s ease;
+  }
+  /* ── Nav SVG active state ── */
+  .nav-btn:hover .nav-svg,
+  .nav-btn.active .nav-svg {
+    opacity: 1 !important;
+    filter: invert(74%) sepia(70%) saturate(500%) hue-rotate(100deg) brightness(1.1) !important;
   }
 
-  @keyframes flicker {
-    0%   { opacity: 0; }
-    60%  { opacity: 1; }
-    70%  { opacity: 0.4; }
-    80%  { opacity: 1; }
-    90%  { opacity: 0.7; }
-    100% { opacity: 1; }
+  /* ── CVE page layout ── */
+  :root {
+    --cyan:   #00e5ff;
+    --yellow: #f0c040;
+  }
+  .cve-panes {
+    flex: 1; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; overflow: hidden; min-height: 0;
+  }
+  .cve-pane { display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+  .cve-section-title {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase;
+  }
+  .cve-meta-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; padding: 10px 0;
+  }
+  .cve-meta-cell { display: flex; flex-direction: column; gap: 4px; }
+  .cve-meta-key {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    color: var(--text-dim); letter-spacing: 1px;
+  }
+  .cve-meta-val {
+    font-family: 'Share Tech Mono', monospace; font-size: 13px;
+    font-weight: 700; color: var(--text);
+  }
+  .cve-meta-val.critical { color: #ff2040; }
+  .cve-meta-val.high     { color: var(--red); }
+  .cve-meta-val.medium   { color: var(--yellow); }
+  .cve-meta-val.low      { color: var(--green); }
+  .cve-meta-val.unknown  { color: var(--text-dim); }
+  .cvss-bar-wrap { height: 3px; background: var(--border2); border-radius: 2px; overflow: hidden; margin-top: 3px; }
+  .cvss-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+  #cve-idle {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px; pointer-events: none;
+    color: var(--text-dim); font-family: 'Share Tech Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-align: center; opacity: 0.4;
+  }
+  .ref-link {
+    display: block; font-family: 'Share Tech Mono', monospace; font-size: 10px;
+    color: var(--text-dim); text-decoration: none; padding: 2px 0;
+    letter-spacing: 0.5px; word-break: break-all;
+    transition: color 0.15s;
+  }
+  .ref-link:hover { color: var(--green); }
+
+  /* ── Alert Dashboard shared styles ── */
+  .dash-grid-top {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; flex-shrink: 0;
+  }
+  .dash-metric {
+    background: var(--panel); border: 1px solid var(--border2); border-radius: 4px;
+    padding: 14px 16px; position: relative; overflow: hidden;
+  }
+  .dash-metric-label {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    color: var(--text-dim); letter-spacing: 2px; margin-bottom: 8px;
+  }
+  .dash-metric-val {
+    font-family: 'Share Tech Mono', monospace; font-size: 28px;
+    font-weight: 700; line-height: 1;
+  }
+  .dash-metric-sub {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    color: var(--text-dim); letter-spacing: 1px; margin-top: 4px;
+  }
+  .dash-threat-bar {
+    flex-shrink: 0; padding: 10px 16px; border-radius: 3px;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    letter-spacing: 2px; display: flex; align-items: center; gap: 12px;
+  }
+  .dash-threat-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .dash-headlines { flex: 1; }
+  .dash-headline-row {
+    display: flex; align-items: flex-start; gap: 12px; padding: 10px 0;
+    border-bottom: 1px solid var(--border); animation: fade-in 0.3s ease;
+  }
+  .dash-sev-badge {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    padding: 2px 8px; border-radius: 2px; letter-spacing: 1px;
+    white-space: nowrap; flex-shrink: 0; margin-top: 1px;
+  }
+  .dash-headline-title {
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    color: var(--text); line-height: 1.5; flex: 1;
+  }
+  .dash-headline-title a { color: inherit; text-decoration: none; }
+  .dash-headline-title a:hover { color: var(--green); }
+  .dash-ts {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    color: var(--text-dim); letter-spacing: 1px;
+  }
+  .dash-refresh-btn {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    color: var(--text-dim); background: none; border: none;
+    cursor: pointer; letter-spacing: 1px; transition: color 0.15s;
+  }
+  .dash-refresh-btn:hover { color: var(--green); }
+
+  /* ── IR Checklist ── */
+  #page-ir { padding: 18px 22px; gap: 12px; overflow: hidden; }
+  .ir-panes {
+    flex: 1; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; overflow: hidden; min-height: 0;
+  }
+  .ir-pane { display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+  .ir-output {
+    flex: 1; overflow-y: auto; font-family: 'Share Tech Mono', monospace;
+    font-size: 11px; line-height: 1.8; white-space: pre-wrap; word-break: break-word;
+    color: var(--text);
+  }
+  .ir-section-heading {
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    font-weight: 700; color: var(--green); letter-spacing: 1px;
+    margin: 10px 0 4px; display: block;
+  }
+  .ir-checklist-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 5px 0; border-bottom: 1px solid var(--border);
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    color: var(--text); cursor: pointer; transition: opacity 0.15s;
+  }
+  .ir-checklist-item.done { opacity: 0.45; text-decoration: line-through; }
+  .ir-checkbox {
+    width: 14px; height: 14px; border: 1px solid var(--green-dim);
+    border-radius: 2px; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .ir-checklist-item.done .ir-checkbox {
+    background: var(--green-dim);
+  }
+  .ir-severity-badge {
+    font-family: 'Share Tech Mono', monospace; font-size: 10px;
+    padding: 3px 10px; border-radius: 2px; letter-spacing: 1px;
+    display: inline-block; margin-bottom: 8px;
+  }
+  .ir-type-label {
+    font-family: 'Share Tech Mono', monospace; font-size: 13px;
+    color: var(--cyan); letter-spacing: 2px; margin-bottom: 10px; display: block;
+  }
+
+  /* ── Vulnerability Scanner ── */
+  #page-scanner { padding: 18px 22px; gap: 12px; overflow: hidden; }
+  .scanner-panes {
+    flex: 1; display: grid; grid-template-columns: 1fr 1.4fr;
+    gap: 14px; overflow: hidden; min-height: 0;
+  }
+  .scanner-pane { display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+  .port-table { width: 100%; border-collapse: collapse; }
+  .port-table th {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    color: var(--text-dim); letter-spacing: 1px; padding: 0 8px 6px 0;
+    border-bottom: 1px solid var(--border2); text-align: left;
+  }
+  .port-table td {
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    color: var(--text-mid); padding: 5px 8px 5px 0;
+    border-bottom: 1px solid rgba(14,31,24,0.5);
+  }
+  .port-table td.port-num { color: var(--cyan); font-size: 12px; }
+  .port-table td.svc-name { color: var(--text); }
+  .risk-badge {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    padding: 1px 7px; border-radius: 2px; letter-spacing: 1px;
+  }
+  .risk-CRITICAL { color: #ff2040; border: 1px solid #660016; background: rgba(255,32,64,0.07); }
+  .risk-HIGH     { color: var(--red); border: 1px solid #660020; background: rgba(255,64,96,0.07); }
+  .risk-MEDIUM   { color: var(--yellow); border: 1px solid #806010; background: rgba(240,192,64,0.07); }
+  .risk-LOW      { color: var(--green); border: 1px solid var(--green-dim); background: rgba(0,229,135,0.07); }
+  .scan-mode-row { display: flex; gap: 8px; align-items: center; }
+  .mode-btn {
+    font-family: 'Share Tech Mono', monospace; font-size: 10px;
+    padding: 5px 12px; border-radius: 3px; border: 1px solid var(--border2);
+    background: transparent; color: var(--text-dim); cursor: pointer;
+    transition: all 0.15s; letter-spacing: 1px;
+  }
+  .mode-btn.active {
+    border-color: var(--green-dim); color: var(--green);
+    background: rgba(0,229,135,0.07);
+  }
+  .mode-btn:hover { border-color: var(--green-dim); color: var(--green); }
+  .scan-legal {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    color: var(--red); letter-spacing: 0.5px; line-height: 1.5; opacity: 0.75;
+    border: 1px solid rgba(255,64,96,0.25); border-radius: 3px;
+    padding: 6px 10px; flex-shrink: 0;
+  }
+  .ai-assessment {
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    line-height: 1.8; white-space: pre-wrap; color: var(--text);
   }
 </style>
 </head>
@@ -575,7 +987,26 @@
 
 <!-- Boot screen -->
 <div id="boot">
-  <div id="boot-logo">⬡ A.R.I.S</div>
+  <div id="boot-stage">
+    <div id="boot-hex-wrap">
+      <svg width="56" height="56" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="50,5 93,27.5 93,72.5 50,95 7,72.5 7,27.5"
+                 stroke="#00e587" stroke-width="5" fill="rgba(0,229,135,0.06)"/>
+        <polygon points="50,18 82,35.5 82,64.5 50,82 18,64.5 18,35.5"
+                 stroke="#00e587" stroke-width="2" fill="none" opacity="0.3"/>
+        <circle cx="50" cy="50" r="8" fill="#00e587" opacity="0.9"/>
+      </svg>
+    </div>
+    <div id="boot-name">
+      <span class="boot-letter" id="bl-A">A</span>
+      <span class="boot-dot"   id="bl-D1">.</span>
+      <span class="boot-letter" id="bl-R">R</span>
+      <span class="boot-dot"   id="bl-D2">.</span>
+      <span class="boot-letter" id="bl-I">I</span>
+      <span class="boot-dot"   id="bl-D3">.</span>
+      <span class="boot-letter" id="bl-S">S</span>
+    </div>
+  </div>
   <div id="boot-sub">ADAPTIVE RECON &amp; INTELLIGENCE SYSTEM</div>
   <div id="boot-bar-wrap"><div id="boot-bar"></div></div>
 </div>
@@ -584,7 +1015,7 @@
 
   <!-- Sidebar -->
   <div id="sidebar">
-    <div id="logo">
+    <div id="logo" onclick="switchPage('system', null)" title="System Monitor">
       <!-- hexagon SVG logo -->
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <polygon points="50,5 93,27.5 93,72.5 50,95 7,72.5 7,27.5"
@@ -595,7 +1026,7 @@
       </svg>
     </div>
     <div id="nav">
-      <button class="nav-btn active" data-page="news" onclick="switchPage('news', this)">
+      <button class="nav-btn " data-page="news" onclick="switchPage('news', this)">
         <img src="../static/icons/news.png" alt="News">
         <span class="nav-tooltip">CYBER NEWS</span>
       </button>
@@ -606,6 +1037,41 @@
       <button class="nav-btn" data-page="chat" onclick="switchPage('chat', this)">
         <img src="../static/icons/chat.png" alt="Chat">
         <span class="nav-tooltip">AI CHAT</span>
+      </button>
+      <button class="nav-btn" data-page="email" onclick="switchPage('email', this)">
+        <img src="../static/icons/email.png" alt="Email">
+        <span class="nav-tooltip">PHISHING ANALYZER</span>
+      </button>
+    <button class="nav-btn" data-page="cve" onclick="switchPage('cve', this)">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+             style="opacity:0.45; filter:none; transition:opacity 0.18s, filter 0.18s;" class="nav-svg">
+          <path d="M12 2L4 5v6c0 5.25 3.5 10.15 8 11.35C16.5 21.15 20 16.25 20 11V5l-8-3z"
+                stroke="#cdd9e5" stroke-width="1.5" fill="none"/>
+          <path d="M9 12l2 2 4-4" stroke="#cdd9e5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="nav-tooltip">CVE LOOKUP</span>
+      </button>
+
+      <!-- IR Checklist -->
+      <button class="nav-btn" data-page="ir" onclick="switchPage('ir', this)">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+             style="opacity:0.45; transition:opacity 0.18s, filter 0.18s;" class="nav-svg">
+          <rect x="5" y="2" width="14" height="20" rx="2" stroke="#cdd9e5" stroke-width="1.5" fill="none"/>
+          <path d="M9 7h6M9 11h6M9 15h4" stroke="#cdd9e5" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M15 17l1.5 1.5L19 16" stroke="#cdd9e5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="nav-tooltip">IR CHECKLIST</span>
+      </button>
+
+      <!-- Vulnerability Scanner -->
+      <button class="nav-btn" data-page="scanner" onclick="switchPage('scanner', this)">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+             style="opacity:0.45; transition:opacity 0.18s, filter 0.18s;" class="nav-svg">
+          <circle cx="12" cy="12" r="9" stroke="#cdd9e5" stroke-width="1.5" fill="none"/>
+          <circle cx="12" cy="12" r="4" stroke="#cdd9e5" stroke-width="1.5" fill="none"/>
+          <path d="M12 3v2M12 19v2M3 12h2M19 12h2" stroke="#cdd9e5" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span class="nav-tooltip">VULN SCANNER</span>
       </button>
     </div>
   </div>
@@ -627,11 +1093,132 @@
       </div>
     </div>
 
+
+
+
     <!-- Pages -->
     <div id="pages">
 
+
+      <!-- ══ CENTRAL DASHBOARD ══ -->
+      <div class="page active" id="page-system">
+
+        <!-- Title bar -->
+        <div class="cc-top-bar" style="flex-shrink:0;">
+          <span class="cc-title">CENTRAL DASHBOARD</span>
+          <span class="cc-date" id="cc-date-lbl">{{ date }}</span>
+          <button class="cc-refresh" style="margin-left:auto;" onclick="loadDashboard()">↻ REFRESH</button>
+          <span style="font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--text-dim); letter-spacing:1px; margin-left:12px;">AUTO IN <span id="dash-countdown">60</span>s</span>
+          <span class="cc-status" id="sys-status" style="margin-left:12px;"></span>
+        </div>
+
+        <!-- TOP ROW: 4 threat metrics + 2 system vitals (6 cards) -->
+        <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:10px; flex-shrink:0;">
+          <div class="dash-metric">
+            <div class="dash-metric-label">CPU USAGE</div>
+            <div class="dash-metric-val" id="dash-cpu" style="color:var(--green);">—</div>
+            <div class="dash-metric-sub">PERCENT</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">RAM USAGE</div>
+            <div class="dash-metric-val" id="dash-ram" style="color:var(--cyan);">—</div>
+            <div class="dash-metric-sub">PERCENT</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">DISK USAGE</div>
+            <div class="dash-metric-val" id="dash-disk" style="color:var(--yellow);">—</div>
+            <div class="dash-metric-sub">PRIMARY VOL</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">CRITICAL HEADLINES</div>
+            <div class="dash-metric-val" id="dash-threats-count" style="color:var(--red);">—</div>
+            <div class="dash-metric-sub">HIGH/CRIT NEWS</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">CPU CORES</div>
+            <div class="dash-metric-val" id="dash-cores" style="color:var(--cyan); font-size:20px;">—</div>
+            <div class="dash-metric-sub">PHYS / LOGICAL</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">UPTIME</div>
+            <div class="dash-metric-val" id="dash-uptime-short" style="color:var(--green); font-size:18px;">—</div>
+            <div class="dash-metric-sub">D:H:M:S</div>
+          </div>
+        </div>
+
+        <!-- News feed threat level bar — reflects RSS headlines, NOT local system status -->
+        <div class="dash-threat-bar" id="dash-threat-bar" style="border:1px solid var(--border2); flex-shrink:0;">
+          <div class="dash-threat-dot" id="dash-threat-dot" style="background:var(--green); box-shadow:0 0 6px var(--green);"></div>
+          <span style="font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--text-dim); letter-spacing:2px;">NEWS FEED THREAT LEVEL</span>
+          <span id="dash-threat-label" style="font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:3px; font-weight:700; color:var(--green);">—</span>
+          <span style="font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--text-dim); letter-spacing:1px; margin-left:4px; opacity:0.6;">· BASED ON RSS FEED HEADLINES</span>
+          <span style="margin-left:auto; font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--text-dim);" id="dash-ts">—</span>
+        </div>
+
+        <!-- MIDDLE ROW: left = threat feed | right = vitals gauges -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1; min-height:0; overflow:hidden;">
+
+          <!-- LEFT: threat intelligence feed -->
+          <div class="cc-card" style="display:flex; flex-direction:column; overflow:hidden; min-height:0;">
+            <div class="corner-br"></div><div class="corner-bl"></div>
+            <div class="cc-card-title"><span class="dot"></span>THREAT INTELLIGENCE FEED</div>
+            <div id="dash-headlines" style="flex:1; overflow-y:auto; font-family:'Share Tech Mono',monospace; font-size:11px;">
+              <span style="color:var(--text-dim);">Loading feed...</span>
+            </div>
+          </div>
+
+          <!-- RIGHT: system vitals gauges -->
+          <div class="cc-card" style="display:flex; flex-direction:column; overflow:hidden; min-height:0;">
+            <div class="corner-br"></div><div class="corner-bl"></div>
+            <div class="cc-card-title"><span class="dot"></span>SYSTEM VITALS</div>
+            <div class="vitals-row" id="vitals-row" style="flex:1; align-items:center;">—</div>
+          </div>
+        </div>
+
+        <!-- BOTTOM ROW: OS info | disk | network | processes -->
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; flex-shrink:0;">
+
+
+          <!-- OS INFO -->
+          <div class="cc-card" id="card-os" style="overflow:hidden;">
+            <div class="corner-br"></div><div class="corner-bl"></div>
+            <div class="cc-card-title"><span class="dot"></span>SYSTEM INFO</div>
+            <div id="os-kv" style="font-size:9px;">—</div>
+          </div>
+
+          <!-- DISK -->
+          <div class="cc-card" id="card-disk" style="overflow:hidden;">
+            <div class="corner-br"></div><div class="corner-bl"></div>
+            <div class="cc-card-title"><span class="dot"></span>STORAGE</div>
+            <div id="disk-bars">—</div>
+          </div>
+
+          <!-- NETWORK -->
+          <div class="cc-card" id="card-net" style="overflow:hidden;">
+            <div class="corner-br"></div><div class="corner-bl"></div>
+            <div class="cc-card-title"><span class="dot"></span>NETWORK</div>
+            <div id="net-content">—</div>
+          </div>
+
+          <!-- PROCESSES -->
+          <div class="cc-card" id="card-proc" style="overflow:hidden; display:flex; flex-direction:column;">
+            <div class="corner-br"></div><div class="corner-bl"></div>
+            <div class="cc-card-title"><span class="dot"></span>TOP PROCESSES</div>
+            <div style="overflow-y:auto; flex:1;">
+              <table class="proc-table" id="proc-table"><tbody></tbody></table>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /page-system -->
+ 
+ 
+
+
+
       <!-- ── NEWS ── -->
-      <div class="page active" id="page-news">
+      <div class="page" id="page-news">
+        <span class="cc-title">CYBER NEWS</span>
         <div class="top-bar">
           <span class="section-label">// latest cybersecurity headlines — summarized by local ai</span>
           <button class="btn btn-green" id="news-btn" onclick="fetchNews()">FETCH &amp; SUMMARIZE</button>
@@ -646,6 +1233,7 @@
 
       <!-- ── LOG ── -->
       <div class="page" id="page-log">
+          <span class="cc-title">LOG ANALYZER</span>
         <span class="section-label">// paste log content below — auth.log, syslog, nginx, etc.</span>
         <div class="log-panes">
           <div class="log-pane">
@@ -666,8 +1254,110 @@
         </div>
       </div>
 
+                 <!-- ── PHISHING ANALYZER ── -->
+      <div class="page" id="page-email" style="padding:18px 22px; gap:12px; overflow:hidden;">
+ 
+        <!-- Title row -->
+        <div style="display:flex; align-items:center; gap:16px; flex-shrink:0;">
+          <span class="cc-title" style="font-size:16px; letter-spacing:4px;">PHISHING ANALYZER</span>
+          <span style="font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--red);
+                       border:1px solid var(--red); padding:2px 8px; border-radius:2px;
+                       letter-spacing:1px; opacity:0.7;">THREAT DETECTION</span>
+          <span class="status-line" id="email-status" style="margin-left:auto;"></span>
+        </div>
+ 
+        <!-- Threat indicator bar -->
+        <div id="threat-bar" style="display:none; flex-shrink:0; padding:10px 14px;
+             border-radius:3px; font-family:'Share Tech Mono',monospace; font-size:11px;
+             letter-spacing:1px; animation:fade-in 0.3s ease;">
+        </div>
+ 
+        <!-- Two-pane -->
+        <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:14px;
+                    overflow:hidden; min-height:0;">
+ 
+          <!-- LEFT: input -->
+          <div style="display:flex; flex-direction:column; gap:8px; overflow:hidden;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="section-label">// paste raw email or headers</span>
+            </div>
+ 
+            <!-- Mock email chrome wrapper -->
+            <div style="border:1px solid var(--border2); border-radius:4px; overflow:hidden;
+                        flex:1; display:flex; flex-direction:column;">
+ 
+              <!-- Fake email header bar -->
+              <div style="background:#080f18; border-bottom:1px solid var(--border2);
+                          padding:8px 12px; display:flex; flex-direction:column; gap:4px;
+                          flex-shrink:0;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-family:'Share Tech Mono',monospace; font-size:9px;
+                               color:var(--text-dim); width:36px; letter-spacing:1px;">FROM</span>
+                  <span id="lbl-from" style="font-family:'Share Tech Mono',monospace;
+                               font-size:10px; color:var(--red); letter-spacing:0.5px;">—</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-family:'Share Tech Mono',monospace; font-size:9px;
+                               color:var(--text-dim); width:36px; letter-spacing:1px;">SUBJ</span>
+                  <span id="lbl-subj" style="font-family:'Share Tech Mono',monospace;
+                               font-size:10px; color:var(--text-mid); letter-spacing:0.5px;">—</span>
+                </div>
+              </div>
+ 
+              <textarea class="panel" id="email-input"
+                placeholder="Paste full email content here including headers, body, and any links..."
+                style="flex:1; border:none; border-radius:0; resize:none;"
+                oninput="parseEmailPreview(this.value)"></textarea>
+            </div>
+ 
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button class="btn btn-purple" id="email-btn" onclick="analyzeEmails()">
+                ⚡ ANALYZE EMAIL
+              </button>
+              <button class="btn btn-ghost" onclick="clearEmail()">CLEAR</button>
+              <!-- threat score badge -->
+              <div id="score-badge" style="margin-left:auto; display:none;
+                   font-family:'Share Tech Mono',monospace; font-size:10px;
+                   padding:4px 12px; border-radius:2px; letter-spacing:1px;">
+              </div>
+            </div>
+          </div>
+ 
+          <!-- RIGHT: output -->
+          <div style="display:flex; flex-direction:column; gap:8px; overflow:hidden;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="section-label">// threat analysis report</span>
+              <!-- IOC tag strip -->
+              <div id="ioc-strip" style="display:flex; gap:6px; flex-wrap:wrap; margin-left:8px;"></div>
+            </div>
+ 
+            <div class="panel" id="email-output" style="flex:1; position:relative;">
+              <!-- Idle state graphic -->
+              <div id="email-idle" style="position:absolute; inset:0; display:flex;
+                   flex-direction:column; align-items:center; justify-content:center; gap:14px;
+                   pointer-events:none;">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" opacity="0.15">
+                  <rect x="4" y="10" width="40" height="28" rx="2"
+                        stroke="#c080ff" stroke-width="2"/>
+                  <path d="M4 14 L24 26 L44 14" stroke="#c080ff" stroke-width="2"/>
+                  <circle cx="38" cy="34" r="8" fill="#c080ff" opacity="0.3"/>
+                  <path d="M35 34 L37.5 36.5 L41.5 31.5" stroke="#c080ff"
+                        stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <span style="font-family:'Share Tech Mono',monospace; font-size:10px;
+                             color:var(--text-dim); letter-spacing:2px; text-align:center;">
+                  AWAITING EMAIL SCAN<br>
+                  <span style="font-size:9px; opacity:0.6;">PASTE EMAIL → ANALYZE EMAIL</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <!-- ── CHAT ── -->
       <div class="page" id="page-chat">
+          <span class="cc-title">CYBER AI CHAT</span>
         <span class="section-label">// ask your local ai anything about cybersecurity</span>
         <div class="panel chat-output" id="chat-output"></div>
         <div class="input-row">
@@ -677,19 +1367,288 @@
           <button class="btn btn-green" id="chat-btn" onclick="sendChat()">SEND ▶</button>
         </div>
       </div>
+<!-- ── CVE LOOKUP ── -->
+      <div class="page" id="page-cve" style="padding:18px 22px; gap:12px; overflow:hidden;">
+ 
+        <!-- Title row -->
+        <div style="display:flex; align-items:center; gap:16px; flex-shrink:0;">
+          <span class="cc-title" style="font-size:16px; letter-spacing:4px;">CVE LOOKUP</span>
+          <span style="font-family:'Share Tech Mono',monospace; font-size:9px; color:#f0c040;
+                       border:1px solid #a07010; padding:2px 8px; border-radius:2px;
+                       letter-spacing:1px; opacity:0.8;">NIST NVD</span>
+          <span class="status-line" id="cve-status" style="margin-left:auto;"></span>
+        </div>
+ 
+        <!-- Search bar -->
+        <div class="input-row" style="flex-shrink:0;">
+          <input class="text-input" id="cve-input"
+                 placeholder="e.g. CVE-2024-1234 or CVE-2021-44228"
+                 style="text-transform:uppercase; letter-spacing:1px;"
+                 onkeydown="if(event.key==='Enter') lookupCVE()">
+          <button class="btn btn-green" id="cve-btn" onclick="lookupCVE()">⚡ LOOKUP</button>
+          <button class="btn btn-ghost" onclick="clearCVE()">CLEAR</button>
+        </div>
+ 
+        <!-- Meta strip (hidden until result) -->
+        <div id="cve-meta" style="display:none; flex-shrink:0;">
+          <div class="cve-meta-grid">
+            <div class="cve-meta-cell">
+              <span class="cve-meta-key">CVE ID</span>
+              <span class="cve-meta-val" id="meta-id" style="font-size:11px;">—</span>
+            </div>
+            <div class="cve-meta-cell">
+              <span class="cve-meta-key">CVSS SCORE</span>
+              <span class="cve-meta-val" id="meta-score">—</span>
+              <div class="cvss-bar-wrap"><div class="cvss-bar-fill" id="meta-bar" style="width:0%;"></div></div>
+            </div>
+            <div class="cve-meta-cell">
+              <span class="cve-meta-key">SEVERITY</span>
+              <span class="cve-meta-val" id="meta-sev">—</span>
+            </div>
+            <div class="cve-meta-cell">
+              <span class="cve-meta-key">PUBLISHED</span>
+              <span class="cve-meta-val" id="meta-pub" style="font-size:11px;">—</span>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- Two-pane: NVD description + AI explanation -->
+        <div class="cve-panes">
+ 
+          <!-- LEFT: NVD raw + references -->
+          <div class="cve-pane">
+            <div class="cve-section-title">// nvd description</div>
+            <div class="panel" id="cve-raw" style="flex:1; position:relative;">
+              <div id="cve-idle">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L4 5v6c0 5.25 3.5 10.15 8 11.35C16.5 21.15 20 16.25 20 11V5l-8-3z"
+                        stroke="#cdd9e5" stroke-width="1.2" fill="none"/>
+                  <path d="M9 12l2 2 4-4" stroke="#cdd9e5" stroke-width="1.2"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>ENTER A CVE ID TO BEGIN</span>
+              </div>
+            </div>
+            <div id="cve-refs" style="display:none; flex-shrink:0; max-height:120px; overflow-y:auto;">
+              <div class="cve-section-title">// references</div>
+              <div id="cve-refs-list"></div>
+            </div>
+          </div>
+ 
+          <!-- RIGHT: AI plain-English explanation -->
+          <div class="cve-pane">
+            <div class="cve-section-title">// a.r.i.s explanation</div>
+            <div class="panel" id="cve-explain" style="flex:1; white-space:pre-wrap; word-break:break-word;">
+              <span style="color:var(--text-dim);">AI explanation will stream here after lookup...</span>
+            </div>
+          </div>
+ 
+        </div>
+      </div><!-- /page-cve -->
+ 
+
+      <!-- ══ IR CHECKLIST ══ -->
+      <div class="page" id="page-ir">
+        <div style="display:flex; align-items:center; gap:14px; flex-shrink:0;">
+          <span class="cc-title">IR CHECKLIST</span>
+          <span style="font-family:'Share Tech Mono',monospace; font-size:9px; color:#f0c040;
+                       border:1px solid #a07010; padding:2px 8px; border-radius:2px; letter-spacing:1px;">NIST SP 800-61</span>
+          <span class="status-line" id="ir-status" style="margin-left:auto;"></span>
+        </div>
+
+        <!-- Incident type + severity strip (shown after analysis) -->
+        <div id="ir-meta-strip" style="display:none; flex-shrink:0; display:none; gap:12px; align-items:center;">
+          <span class="ir-type-label" id="ir-type-label">—</span>
+          <span class="ir-severity-badge" id="ir-sev-badge">—</span>
+          <button class="btn btn-ghost" style="margin-left:auto; font-size:10px;" onclick="irExportText()">⬇ EXPORT</button>
+        </div>
+
+        <div class="ir-panes">
+          <!-- LEFT: paste alert -->
+          <div class="ir-pane">
+            <span class="section-label">// paste alert, log excerpt, or incident description</span>
+            <textarea class="panel" id="ir-input" style="flex:1; resize:none;"
+              placeholder="e.g.&#10;Failed password for root from 192.168.1.44 port 52341 ssh2&#10;Failed password for root from 192.168.1.44 port 52344 ssh2&#10;Failed password for root from 192.168.1.44 port 52347 ssh2&#10;Accepted password for root from 192.168.1.44 port 52350 ssh2"></textarea>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-purple" id="ir-btn" onclick="runIRChecklist()">⚡ GENERATE CHECKLIST</button>
+              <button class="btn btn-ghost" onclick="clearIR()">CLEAR</button>
+            </div>
+          </div>
+
+          <!-- RIGHT: structured checklist output -->
+          <div class="ir-pane">
+            <span class="section-label">// incident response playbook</span>
+            <div class="panel ir-output" id="ir-output">
+              <span style="color:var(--text-dim);">Generated checklist will appear here. Items are interactive — click to mark complete.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ══ VULNERABILITY SCANNER ══ -->
+      <div class="page" id="page-scanner">
+        <div style="display:flex; align-items:center; gap:14px; flex-shrink:0;">
+          <span class="cc-title">PORT SCANNER</span>
+          <span style="font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--red);
+                       border:1px solid #660020; padding:2px 8px; border-radius:2px; letter-spacing:1px;">LAN ONLY</span>
+          <span class="status-line" id="scan-status" style="margin-left:auto;"></span>
+        </div>
+
+        <!-- Legal disclaimer -->
+        <div class="scan-legal" style="flex-shrink:0;">
+          ⚠ AUTHORIZED USE ONLY — A.R.I.S. restricts scanning to localhost and private LAN ranges (RFC-1918).
+          Only scan systems you own or have explicit written permission to test.
+          Unauthorized port scanning may be illegal in your jurisdiction.
+        </div>
+
+        <!-- Target + mode row -->
+        <div style="display:flex; gap:10px; align-items:center; flex-shrink:0;">
+          <input class="text-input" id="scan-target" placeholder="e.g. 127.0.0.1 or 192.168.1.1"
+                 style="max-width:280px;"
+                 onkeydown="if(event.key==='Enter') startScan()">
+          <div class="scan-mode-row">
+            <button class="mode-btn active" id="mode-quick"   onclick="setMode('quick')">QUICK</button>
+            <button class="mode-btn"        id="mode-top100"  onclick="setMode('top100')">TOP 100</button>
+            <button class="mode-btn"        id="mode-full"    onclick="setMode('full')">FULL</button>
+            <button class="mode-btn"        id="mode-stealth" onclick="setMode('stealth')">ATTACK SURFACE</button>
+          </div>
+          <button class="btn btn-green" id="scan-btn" onclick="startScan()">▶ SCAN</button>
+          <button class="btn btn-ghost" onclick="clearScan()">CLEAR</button>
+        </div>
+
+        <!-- Mode description -->
+        <div id="scan-mode-desc" style="font-family:'Share Tech Mono',monospace; font-size:9px;
+             color:var(--text-dim); letter-spacing:1px; flex-shrink:0;">
+          QUICK — 19 common service ports (SSH, HTTP, DBs, RDP...)
+        </div>
+
+        <div class="scanner-panes">
+          <!-- LEFT: port results table -->
+          <div class="scanner-pane">
+            <span class="section-label">// open ports</span>
+            <div class="panel" id="scan-ports" style="flex:1; overflow-y:auto;">
+              <span style="color:var(--text-dim); font-size:11px; font-family:'Share Tech Mono',monospace;">
+                Enter a target and press SCAN...
+              </span>
+            </div>
+            <div id="scan-summary" style="display:none; font-family:'Share Tech Mono',monospace;
+                 font-size:10px; color:var(--text-dim); padding:6px 0; letter-spacing:1px;"></div>
+          </div>
+
+          <!-- RIGHT: AI risk assessment -->
+          <div class="scanner-pane">
+            <span class="section-label">// a.r.i.s. risk assessment</span>
+            <div class="panel" id="scan-ai" style="flex:1; overflow-y:auto;">
+              <span style="color:var(--text-dim); font-size:11px; font-family:'Share Tech Mono',monospace;">
+                AI assessment streams here after scan completes...
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     </div><!-- /pages -->
   </div><!-- /right -->
 </div><!-- /app -->
-
+ 
 <script>
   // ── Boot sequence ──────────────────────────────────────────────────────────
   window.addEventListener('load', () => {
-    const bar  = document.getElementById('boot-bar');
-    const boot = document.getElementById('boot');
-    setTimeout(() => { bar.style.width = '100%'; }, 100);
-    setTimeout(() => { boot.classList.add('gone'); }, 1400);
-    setTimeout(() => { boot.remove(); }, 1900);
+    const bootEl  = document.getElementById('boot');
+    const hex     = document.getElementById('boot-hex-wrap');
+    const bar     = document.getElementById('boot-bar');
+    const barWrap = document.getElementById('boot-bar-wrap');
+    const sub     = document.getElementById('boot-sub');
+
+    // Letter elements ordered S → A (right-to-left reveal order)
+    // Each has its center-x position relative to the stage left edge
+    // Stage: 300px wide. Hex rests at x=0 (left). Letters start at x=72.
+    // Letter centres measured from stage left (approx, Share Tech Mono 50px):
+    const letters = [
+      { el: document.getElementById('bl-S'),  cx: 279 },
+      { el: document.getElementById('bl-D3'), cx: 252 },
+      { el: document.getElementById('bl-I'),  cx: 225 },
+      { el: document.getElementById('bl-D2'), cx: 199 },
+      { el: document.getElementById('bl-R'),  cx: 170 },
+      { el: document.getElementById('bl-D1'), cx: 143 },
+      { el: document.getElementById('bl-A'),  cx: 112 },
+    ];
+
+    const DROP_MS = 480;   // hex falls from above
+    const ROLL_MS = 1400;  // hex rolls right→left
+    // Hex starts at x=236 (right edge of 300px stage minus 64px hex width)
+    const START_X = 236;
+
+    let rafId = null;
+
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+    function easeInOutQuad(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+    // Phase 1: drop
+    const dropStart = performance.now() + 100;
+    hex.style.opacity = '1';
+
+    function dropFrame(now) {
+      const t = Math.min((now - dropStart) / DROP_MS, 1);
+      if (t < 0) { rafId = requestAnimationFrame(dropFrame); return; }
+      const ease = easeOutCubic(t);
+      const y = -160 * (1 - ease);
+      hex.style.transform = `translateX(${START_X}px) translateY(${y}px)`;
+      if (t < 1) { rafId = requestAnimationFrame(dropFrame); }
+      else {
+        hex.style.transform = `translateX(${START_X}px) translateY(0px)`;
+        // tiny pause then roll
+        setTimeout(startRoll, 60);
+      }
+    }
+    rafId = requestAnimationFrame(dropFrame);
+
+    // Phase 2: roll left while revealing letters
+    function startRoll() {
+      const rollStart = performance.now();
+      let revealed = new Array(letters.length).fill(false);
+
+      function rollFrame(now) {
+        const t = Math.min((now - rollStart) / ROLL_MS, 1);
+        const ease = easeInOutQuad(t);
+        const x   = START_X * (1 - ease);
+        const rot = -240 * ease;
+        hex.style.transform = `translateX(${x}px) rotate(${rot}deg)`;
+
+        // Hex right-edge = x + 64
+        const rightEdge = x + 64;
+
+        // Reveal each letter the moment hex right-edge passes its centre
+        letters.forEach((l, i) => {
+          if (!revealed[i] && rightEdge <= l.cx + 4) {
+            l.el.style.opacity = '1';
+            revealed[i] = true;
+          }
+        });
+
+        if (t < 1) {
+          rafId = requestAnimationFrame(rollFrame);
+        } else {
+          hex.style.transform = `translateX(0px) rotate(-240deg)`;
+          // Make sure all letters are visible at the end
+          letters.forEach(l => { l.el.style.opacity = '1'; });
+          // Fade in subtitle + bar
+          setTimeout(() => {
+            sub.style.opacity    = '1';
+            barWrap.style.opacity = '1';
+            setTimeout(() => { bar.style.width = '100%'; }, 80);
+          }, 200);
+        }
+      }
+      rafId = requestAnimationFrame(rollFrame);
+    }
+
+    // Dismiss boot screen after animation completes
+    const totalMs = 100 + DROP_MS + 60 + ROLL_MS + 200 + 900 + 400;
+    setTimeout(() => { bootEl.classList.add('gone'); }, totalMs);
+    setTimeout(() => { bootEl.remove(); loadDashboard(); }, totalMs + 600);
 
     // Init chat
     appendMsg('aris', `⚙  Connected to {{ model | upper }}. Ask me anything — I'm A.R.I.S, your local security AI.`);
@@ -700,10 +1659,264 @@
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('page-' + id).classList.add('active');
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
+    if (id === 'system') loadDashboard();
   }
 
-  // ── News ───────────────────────────────────────────────────────────────────
+// ── Uptime ticker ─────────────────────────────────────────────────────────────
+let bootTimestamp = null;
+let uptimeTicker  = null;
+
+function startUptimeTick(bootEpoch) {
+  if (uptimeTicker) clearInterval(uptimeTicker);
+  bootTimestamp = bootEpoch;
+  function tick() {
+    const elapsed = Math.floor(Date.now()/1000 - bootTimestamp);
+    const d = Math.floor(elapsed / 86400);
+    const h = Math.floor((elapsed % 86400) / 3600);
+    const m = Math.floor((elapsed % 3600) / 60);
+    const s = elapsed % 60;
+    const dayEl = document.getElementById('ut-d');
+    const hourEl = document.getElementById('ut-h');
+    const minEl = document.getElementById('ut-m');
+    const secEl = document.getElementById('ut-s');
+    if (dayEl) dayEl.textContent = String(d).padStart(2,'0');
+    if (hourEl) hourEl.textContent = String(h).padStart(2,'0');
+    if (minEl) minEl.textContent = String(m).padStart(2,'0');
+    if (secEl) secEl.textContent = String(s).padStart(2,'0');
+    // compact uptime card in metrics row
+    const uptimeEl = document.getElementById('dash-uptime-short');
+    if (uptimeEl) uptimeEl.textContent = `${d}:${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  tick();
+  uptimeTicker = setInterval(tick, 1000);
+}
+
+// ── Gauge SVG ────────────────────────────────────────────────────────────────
+function makeGauge(value, max, color, label, unit='%') {
+  const r = 30, cx = 40, cy = 40;
+  const circ = 2 * Math.PI * r;
+  const pct  = Math.min(value / max, 1);
+  const dash = pct * circ * 0.75;
+  const rot  = -225;
+  const trackColor = color + '22';
+
+  return `<div class="gauge-wrap">
+    <svg class="gauge" width="80" height="80" viewBox="0 0 80 80">
+      <defs>
+        <filter id="glow-${label}">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <circle cx="${cx}" cy="${cy}" r="${r}"
+        fill="none" stroke="${trackColor}" stroke-width="5"
+        stroke-dasharray="${circ * 0.75} ${circ * 0.25}"
+        transform="rotate(${rot} ${cx} ${cy})" stroke-linecap="round"/>
+      <circle cx="${cx}" cy="${cy}" r="${r}"
+        fill="none" stroke="${color}" stroke-width="5"
+        stroke-dasharray="${dash} ${circ - dash}"
+        transform="rotate(${rot} ${cx} ${cy})" stroke-linecap="round"
+        filter="url(#glow-${label})"
+        style="transition:stroke-dasharray 0.6s ease"/>
+      <text x="${cx}" y="${cy+5}" text-anchor="middle"
+        font-family="Orbitron,monospace" font-size="13" font-weight="700"
+        fill="${color}">${Math.round(value)}</text>
+    </svg>
+    <span class="gauge-label">${label}</span>
+  </div>`;
+}
+
+// ── Central Dashboard loader ──────────────────────────────────────────────────
+let dashCountdown = 60;
+let dashCountdownTimer = null;
+
+async function loadDashboard() {
+  const status = document.getElementById('sys-status');
+  status.textContent = 'Loading...'; status.className = 'cc-status';
+
+  // Fire both API calls in parallel
+  const [sysRes, snapRes] = await Promise.allSettled([
+    fetch('/api/sys-dashboard'),
+    fetch('/api/dashboard-snapshot'),
+  ]);
+
+  try {
+    if (sysRes.status === 'fulfilled') {
+      const d = await sysRes.value.json();
+      renderSystem(d);
+    }
+  } catch(e) {}
+
+  try {
+    if (snapRes.status === 'fulfilled') {
+      const d = await snapRes.value.json();
+      renderSnapshot(d);
+    }
+  } catch(e) {}
+
+  status.textContent = '✓ ' + new Date().toLocaleTimeString('en-US',{hour12:false});
+  status.className = 'cc-status ok';
+  resetDashCountdown();
+}
+
+function resetDashCountdown() {
+  dashCountdown = 60;
+  if (dashCountdownTimer) clearInterval(dashCountdownTimer);
+  dashCountdownTimer = setInterval(() => {
+    dashCountdown--;
+    const el = document.getElementById('dash-countdown');
+    if (el) el.textContent = dashCountdown;
+    if (dashCountdown <= 0) {
+      clearInterval(dashCountdownTimer);
+      loadDashboard();
+    }
+  }, 1000);
+}
+
+// ── Render snapshot (threat feed + metric cards) ──────────────────────────────
+function renderSnapshot(d) {
+  // Timestamp
+  const tsEl = document.getElementById('dash-ts');
+  if (tsEl) tsEl.textContent = 'UPDATED ' + d.timestamp;
+
+  // Metric cards
+  const cpu  = d.vitals.cpu;
+  const ram  = d.vitals.ram;
+  const disk = d.vitals.disk;
+  const cpuEl = document.getElementById('dash-cpu');
+  const ramEl = document.getElementById('dash-ram');
+  const diskEl = document.getElementById('dash-disk');
+  if (cpuEl)  { cpuEl.textContent  = cpu  + '%'; cpuEl.style.color  = cpu  > 85 ? 'var(--red)' : cpu  > 60 ? 'var(--yellow)' : 'var(--green)'; }
+  if (ramEl)  { ramEl.textContent  = ram  + '%'; ramEl.style.color  = ram  > 85 ? 'var(--red)' : ram  > 60 ? 'var(--yellow)' : '#00e5ff'; }
+  if (diskEl) { diskEl.textContent = disk + '%'; diskEl.style.color = disk > 85 ? 'var(--red)' : disk > 60 ? 'var(--yellow)' : 'var(--yellow)'; }
+
+  const highCount = d.headlines.filter(h => h.severity === 'CRITICAL' || h.severity === 'HIGH').length;
+  const tcEl = document.getElementById('dash-threats-count');
+  if (tcEl) tcEl.textContent = highCount;
+
+  // Threat level bar
+  const lvl = d.threat_level;
+  const lvlColors = { CRITICAL: '#ff2040', HIGH: '#ff4060', MEDIUM: '#f0c040', LOW: '#00e587' };
+  const lvlBg     = { CRITICAL: 'rgba(255,32,64,0.08)', HIGH: 'rgba(255,64,96,0.08)', MEDIUM: 'rgba(240,192,64,0.08)', LOW: 'rgba(0,229,135,0.06)' };
+  const bar = document.getElementById('dash-threat-bar');
+  const dot = document.getElementById('dash-threat-dot');
+  const lbl = document.getElementById('dash-threat-label');
+  if (bar) { bar.style.background = lvlBg[lvl] || ''; bar.style.borderColor = lvlColors[lvl] || 'var(--border2)'; }
+  if (dot) { dot.style.background = lvlColors[lvl] || 'var(--green)'; dot.style.boxShadow = `0 0 6px ${lvlColors[lvl] || 'var(--green)'}`; }
+  if (lbl) { lbl.textContent = lvl; lbl.style.color = lvlColors[lvl] || 'var(--text)'; }
+
+  // Headlines feed
+  const headlinesEl = document.getElementById('dash-headlines');
+  if (!headlinesEl) return;
+  const sevColor = { CRITICAL: '#ff2040', HIGH: 'var(--red)', MEDIUM: 'var(--yellow)', LOW: 'var(--green)' };
+  const sevBg    = { CRITICAL: 'rgba(255,32,64,0.12)', HIGH: 'rgba(255,64,96,0.1)', MEDIUM: 'rgba(240,192,64,0.1)', LOW: 'rgba(0,229,135,0.08)' };
+  headlinesEl.innerHTML = d.headlines.length ? '' : '<span style="color:var(--text-dim);font-size:11px;font-family:\'Share Tech Mono\',monospace;">No headlines fetched. Check internet connection.</span>';
+  d.headlines.forEach(h => {
+    const row = document.createElement('div');
+    row.className = 'dash-headline-row';
+    row.innerHTML = `
+      <span class="dash-sev-badge" style="color:${sevColor[h.severity]};
+        border:1px solid ${sevColor[h.severity]}; background:${sevBg[h.severity]};">${h.severity}</span>
+      <span class="dash-headline-title">
+        <a href="${escHtml(h.link)}" target="_blank">${escHtml(h.title)}</a>
+      </span>`;
+    headlinesEl.appendChild(row);
+  });
+}
+
+function barClass(p) { return p < 60 ? 'g' : p < 85 ? 'y' : 'r'; }
+function colorOf(p)  { return p < 60 ? '#00ff88' : p < 85 ? '#f0c000' : '#ff3050'; }
+
+function renderSystem(d) {
+  const cpu = d.cpu, ram = d.ram, os = d.os;
+
+  // CPU cores card
+  const coresEl = document.getElementById('dash-cores');
+  if (coresEl) coresEl.textContent = `${cpu.physical}P / ${cpu.logical}L`;
+
+  // Uptime ticker
+  try {
+    const bt = new Date(os.boot_time.replace(' ','T')).getTime() / 1000;
+    if (!isNaN(bt)) startUptimeTick(bt);
+  } catch(e) {}
+
+  // OS KV
+  document.getElementById('os-kv').innerHTML = `
+    <div class="kv-row"><span class="kv-key">OS</span>
+      <span class="kv-val c">${esc(os.system)} ${esc(os.release)}</span></div>
+    <div class="kv-row"><span class="kv-key">HOST</span>
+      <span class="kv-val g">${esc(os.node)}</span></div>
+    <div class="kv-row"><span class="kv-key">ARCH</span>
+      <span class="kv-val">${esc(os.machine)}</span></div>
+    <div class="kv-row"><span class="kv-key">PYTHON</span>
+      <span class="kv-val">${esc(os.python)}</span></div>
+    <div class="kv-row"><span class="kv-key">BOOT</span>
+      <span class="kv-val">${esc(os.boot_time)}</span></div>
+    ${cpu.freq_cur ? `<div class="kv-row"><span class="kv-key">FREQ</span>
+      <span class="kv-val">${cpu.freq_cur} MHz</span></div>` : ''}
+  `;
+
+  // Vitals gauges
+  document.getElementById('vitals-row').innerHTML =
+    makeGauge(cpu.total_pct, 100, '#00ff88', 'CPU') +
+    makeGauge(ram.percent,   100, '#00e5ff', 'RAM') +
+    makeGauge(cpu.user_pct,  100, '#f0c000', 'USER %') +
+    makeGauge(cpu.sys_pct,   100, '#ff8c00', 'SYS %') +
+    makeGauge(cpu.idle_pct,  100, '#c080ff', 'IDLE %') +
+    makeGauge(cpu.per_core.reduce((a,b)=>a+b,0)/cpu.per_core.length, 100, '#00ff88', 'AVG CORE');
+
+  // Disks
+  document.getElementById('disk-bars').innerHTML = d.disks.map(dk => `
+    <div class="disk-row">
+      <div class="disk-meta">
+        <span class="disk-name">${esc(dk.mountpoint)}</span>
+        <span style="color:${colorOf(dk.percent)}">${dk.used} / ${dk.total} &nbsp; ${dk.percent}%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill ${barClass(dk.percent)}" style="width:${dk.percent}%"></div>
+      </div>
+      <div class="disk-meta" style="margin-top:2px;">
+        <span>${esc(dk.device)} [${esc(dk.fstype)}]</span>
+        <span style="color:var(--text-dim)">free: ${dk.free}</span>
+      </div>
+    </div>`).join('');
+
+  // Network
+  const ifaces = d.network.interfaces.slice(0,6).map(i => `
+    <div class="iface-row">
+      <span class="iface-name">${esc(i.name)}</span>
+      <span class="iface-ip">${i.ips[0] || '—'}</span>
+      <span class="badge ${i.up ? 'up' : 'down'}">${i.up ? 'UP' : 'DOWN'}</span>
+    </div>`).join('');
+
+  document.getElementById('net-content').innerHTML = `
+    <div style="display:flex; gap:16px; margin-bottom:8px;">
+      <div class="net-stat">
+        <span class="net-val" style="color:var(--green); font-size:14px;">${esc(d.network.sent)}</span>
+        <span class="net-label">SENT</span>
+      </div>
+      <div class="net-stat">
+        <span class="net-val" style="color:var(--cyan); font-size:14px;">${esc(d.network.recv)}</span>
+        <span class="net-label">RECV</span>
+      </div>
+    </div>
+    <div class="iface-list">${ifaces}</div>`;
+
+  // Processes
+  const rows = d.processes.slice(0,10).map(p => {
+    const cc = p.cpu > 50 ? 'high' : p.cpu > 10 ? 'med' : 'low';
+    return `<tr>
+      <td style="color:var(--text-dim);font-size:9px">${p.pid}</td>
+      <td class="name">${esc(p.name)}</td>
+      <td class="${cc}">${p.cpu.toFixed(1)}%</td>
+      <td>${p.mem.toFixed(2)}%</td>
+      <td style="color:var(--text-dim);font-size:9px">${esc(p.user)}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('proc-table').innerHTML =
+    `<thead><tr><th>PID</th><th>NAME</th><th>CPU</th><th>MEM</th><th>USER</th></tr></thead><tbody>${rows}</tbody>`;
+}
   function fetchNews() {
     const btn    = document.getElementById('news-btn');
     const output = document.getElementById('news-output');
@@ -811,6 +2024,143 @@
     document.getElementById('log-output').style.color = 'var(--text-dim)';
   }
 
+   // ── Email preview parser ──────────────────────────────────────────────────
+  function parseEmailPreview(text) {
+    const fromMatch = text.match(/^From:\s*(.+)/im);
+    const subjMatch = text.match(/^Subject:\s*(.+)/im);
+    document.getElementById('lbl-from').textContent = fromMatch ? fromMatch[1].trim() : '—';
+    document.getElementById('lbl-subj').textContent = subjMatch ? subjMatch[1].trim() : '—';
+  }
+ 
+function parseThreatOutput(text) {
+    const lines = text.split(/\r?\n/);
+    let score = null;
+    let threat = null;
+    let confidence = null;
+
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line) continue;
+
+      const scoreMatch = line.match(/score\s*[:\-]?\s*(\d+(?:\.\d+)?)/i);
+      if (scoreMatch) {
+        score = parseFloat(scoreMatch[1]);
+      }
+
+      if (/confidence/i.test(line)) {
+        const confMatch = line.match(/confidence\s*(?:level)?\s*[:\-]?\s*(high|medium|low)/i);
+        if (confMatch) confidence = confMatch[1].toUpperCase();
+        continue;
+      }
+
+      const threatMatch = line.match(/\b(?:threat|level)\b.*\b(low|medium|high)\b/i);
+      if (threatMatch) {
+        threat = threatMatch[1].toUpperCase();
+      }
+    }
+
+    if (score !== null && !threat) {
+      if (score >= 7) threat = 'HIGH';
+      else if (score >= 4) threat = 'MEDIUM';
+      else threat = 'LOW';
+    }
+
+    return {
+      score,
+      threat: threat || 'LOW',
+      confidence,
+    };
+  }
+
+   // ── Email Analyzer ────────────────────────────────────────────────────────────────
+  function analyzeEmails() {
+    const emailText = document.getElementById('email-input').value.trim();
+    const output    = document.getElementById('email-output');
+    const btn       = document.getElementById('email-btn');
+    const status    = document.getElementById('email-status');
+    const idleEl    = document.getElementById('email-idle');
+    const threatBar = document.getElementById('threat-bar');
+    const scoreBadge= document.getElementById('score-badge');
+    const iocStrip  = document.getElementById('ioc-strip');
+ 
+    if (!emailText) {
+      status.textContent = '⚠️ Paste some email content first.';
+      status.className = 'status-line err';
+      return;
+    }
+ 
+    btn.disabled = true;
+    btn.textContent = 'SCANNING...';
+    status.textContent = 'ANALYZING THREAT INDICATORS...';
+    status.className = 'status-line';
+    if (idleEl) idleEl.style.display = 'none';
+    threatBar.style.display = 'none';
+    scoreBadge.style.display = 'none';
+    iocStrip.innerHTML = '';
+    output.textContent = '';
+    output.style.color = 'var(--text)';
+ 
+    streamPost('/api/emailanalyze', { email: emailText }, output, () => {
+      btn.disabled = false;
+      btn.textContent = '⚡ ANALYZE EMAIL';
+      status.textContent = '✓ SCAN COMPLETE';
+      status.className = 'status-line ok';
+      // Parse output for threat level and show badge
+      const parsed = parseThreatOutput(output.textContent);
+      const resultLevel = parsed.threat;
+      const scoreText = parsed.score !== null ? ` (${parsed.score.toFixed(1)}/10)` : '';
+      let levelLabel, color, bg;
+
+      if (resultLevel === 'HIGH') {
+        levelLabel = 'HIGH THREAT'; color = '#ff4060'; bg = 'rgba(255,64,96,0.08)';
+      } else if (resultLevel === 'MEDIUM') {
+        levelLabel = 'MEDIUM THREAT'; color = '#f0c040'; bg = 'rgba(240,192,64,0.08)';
+      } else {
+        levelLabel = 'LOW THREAT'; color = '#00e587'; bg = 'rgba(0,229,135,0.08)';
+      }
+
+      threatBar.style.display = 'block';
+      threatBar.style.background = bg;
+      threatBar.style.border = `1px solid ${color}`;
+      threatBar.style.color = color;
+      threatBar.innerHTML = `● THREAT LEVEL: <strong>${levelLabel}</strong>${parsed.score !== null ? ` — Score ${parsed.score.toFixed(1)}/10` : ''}`;
+      scoreBadge.style.display = 'block';
+      scoreBadge.style.color = color;
+      scoreBadge.style.border = `1px solid ${color}`;
+      scoreBadge.style.background = bg;
+      scoreBadge.textContent = `${levelLabel}${scoreText}`;
+      // Add IOC tags for common indicators
+      const tags = [];
+      if (/https?:\/\//i.test(emailText))     tags.push(['LINKS', '#f0c040']);
+      if (/attachment|\.exe|\.zip/i.test(emailText)) tags.push(['ATTACHMENT', '#ff4060']);
+      if (/urgent|immediate|verify|account|suspend/i.test(emailText)) tags.push(['URGENCY', '#f0c040']);
+      if (/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(emailText)) tags.push(['IP ADDR', '#c080ff']);
+      if (/password|credential|login|signin/i.test(emailText)) tags.push(['CREDS', '#ff4060']);
+      iocStrip.innerHTML = tags.map(([tag, col]) =>
+        `<span style="font-family:'Share Tech Mono',monospace; font-size:9px;
+          padding:2px 7px; border-radius:2px; letter-spacing:1px;
+          color:${col}; border:1px solid ${col}; background:${col}18;">${tag}</span>`
+      ).join('');
+    });
+  }
+ 
+  function clearEmail() {
+    document.getElementById('email-input').value = '';
+    const output = document.getElementById('email-output');
+    output.textContent = '';
+    output.style.color = 'var(--text-dim)';
+    document.getElementById('email-status').textContent = '';
+    document.getElementById('email-status').className = 'status-line';
+    document.getElementById('threat-bar').style.display = 'none';
+    document.getElementById('score-badge').style.display = 'none';
+    document.getElementById('ioc-strip').innerHTML = '';
+    document.getElementById('lbl-from').textContent = '—';
+    document.getElementById('lbl-subj').textContent = '—';
+    const idle = document.getElementById('email-idle');
+    if (idle) idle.style.display = 'flex';
+  }
+ 
+
   // ── Chat ───────────────────────────────────────────────────────────────────
   function sendChat() {
     const input = document.getElementById('chat-input');
@@ -900,13 +2250,391 @@
     }
   }
 
-  // ── Utils ──────────────────────────────────────────────────────────────────
+
+    // ── CVE Lookup ────────────────────────────────────────────────────────────
+  async function lookupCVE() {
+    const raw   = document.getElementById('cve-input').value.trim().toUpperCase();
+    const btn   = document.getElementById('cve-btn');
+    const status = document.getElementById('cve-status');
+    const rawEl  = document.getElementById('cve-raw');
+    const explEl = document.getElementById('cve-explain');
+    const metaEl = document.getElementById('cve-meta');
+    const refsEl = document.getElementById('cve-refs');
+    const idle   = document.getElementById('cve-idle');
+ 
+    if (!raw) {
+      status.textContent = '⚠ Enter a CVE ID first.';
+      status.className = 'status-line err';
+      return;
+    }
+    // Normalise: accept bare numbers like 2021-44228 → CVE-2021-44228
+    const cveId = raw.startsWith('CVE-') ? raw : 'CVE-' + raw;
+ 
+    btn.disabled = true;
+    btn.textContent = 'FETCHING...';
+    status.textContent = 'QUERYING NIST NVD...';
+    status.className = 'status-line';
+    if (idle) idle.style.display = 'none';
+    rawEl.textContent = '';
+    explEl.textContent = '';
+    metaEl.style.display = 'none';
+    refsEl.style.display = 'none';
+ 
+    try {
+      const resp = await fetch('/api/cve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cve_id: cveId })
+      });
+      const data = await resp.json();
+ 
+      if (data.error) {
+        rawEl.textContent = '✗ ' + data.error;
+        rawEl.style.color = 'var(--red)';
+        status.textContent = '✗ LOOKUP FAILED';
+        status.className = 'status-line err';
+        btn.disabled = false;
+        btn.textContent = '⚡ LOOKUP';
+        return;
+      }
+ 
+      // Populate meta strip
+      document.getElementById('meta-id').textContent   = data.cve_id || cveId;
+      const score = data.cvss_score;
+      const sev   = (data.severity || 'UNKNOWN').toUpperCase();
+      document.getElementById('meta-score').textContent = score != null ? score.toFixed(1) : 'N/A';
+      document.getElementById('meta-sev').textContent   = sev;
+      document.getElementById('meta-pub').textContent   = data.published ? data.published.substring(0,10) : '—';
+ 
+      // CVSS bar colour
+      const bar = document.getElementById('meta-bar');
+      const pct = score != null ? (score / 10 * 100).toFixed(1) : 0;
+      bar.style.width = pct + '%';
+      const sevClass = sev === 'CRITICAL' ? '#ff2040' : sev === 'HIGH' ? 'var(--red)' : sev === 'MEDIUM' ? '#f0c040' : 'var(--green)';
+      bar.style.background = sevClass;
+      const scoreEl = document.getElementById('meta-score');
+      scoreEl.className = 'cve-meta-val ' + sev.toLowerCase();
+      const sevEl = document.getElementById('meta-sev');
+      sevEl.className = 'cve-meta-val ' + sev.toLowerCase();
+      metaEl.style.display = 'block';
+ 
+      // Raw description
+      rawEl.style.color = 'var(--text)';
+      rawEl.textContent = data.description || 'No description available.';
+ 
+      // References
+      if (data.references && data.references.length) {
+        const list = document.getElementById('cve-refs-list');
+        list.innerHTML = data.references.slice(0,8).map(r =>
+          `<a class="ref-link" href="${escHtml(r)}" target="_blank" rel="noopener">${escHtml(r)}</a>`
+        ).join('');
+        refsEl.style.display = 'block';
+      }
+ 
+      status.textContent = '✓ NVD DATA LOADED — STREAMING AI EXPLANATION...';
+      status.className = 'status-line ok';
+      btn.textContent = 'EXPLAINING...';
+ 
+      // Stream AI explanation
+      explEl.textContent = '';
+      explEl.style.color = 'var(--text)';
+      streamPost('/api/cve-explain', { cve_id: cveId, description: data.description, cvss_score: score, severity: sev }, explEl, () => {
+        btn.disabled = false;
+        btn.textContent = '⚡ LOOKUP';
+        status.textContent = '✓ COMPLETE';
+        status.className = 'status-line ok';
+      });
+ 
+    } catch (err) {
+      rawEl.textContent = '✗ ' + err.message;
+      rawEl.style.color = 'var(--red)';
+      status.textContent = '✗ ERROR';
+      status.className = 'status-line err';
+      btn.disabled = false;
+      btn.textContent = '⚡ LOOKUP';
+    }
+  }
+ 
+  function clearCVE() {
+    document.getElementById('cve-input').value = '';
+    document.getElementById('cve-raw').textContent = '';
+    document.getElementById('cve-explain').textContent = '';
+    document.getElementById('cve-explain').style.color = 'var(--text-dim)';
+    document.getElementById('cve-explain').textContent = 'AI explanation will stream here after lookup...';
+    document.getElementById('cve-meta').style.display = 'none';
+    document.getElementById('cve-refs').style.display = 'none';
+    document.getElementById('cve-status').textContent = '';
+    document.getElementById('cve-status').className = 'status-line';
+    const idle = document.getElementById('cve-idle');
+    if (idle) idle.style.display = 'flex';
+  }
+ 
+
+
+  // ══ IR CHECKLIST ══════════════════════════════════════════════════════════
+  let irRawText = '';
+
+  function runIRChecklist() {
+    const alert = document.getElementById('ir-input').value.trim();
+    const btn   = document.getElementById('ir-btn');
+    const status = document.getElementById('ir-status');
+    const output = document.getElementById('ir-output');
+    if (!alert) {
+      status.textContent = '⚠ Paste an alert first.';
+      status.className = 'status-line err';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'ANALYZING...';
+    status.textContent = 'GENERATING PLAYBOOK...';
+    status.className = 'status-line';
+    output.textContent = '';
+    irRawText = '';
+
+    // Stream raw text, then render structured checklist when done
+    streamPost('/api/ir-checklist', { alert }, null, () => {
+      btn.disabled = false;
+      btn.textContent = '⚡ GENERATE CHECKLIST';
+      status.textContent = '✓ PLAYBOOK READY';
+      status.className = 'status-line ok';
+      renderIRChecklist(irRawText);
+    }, (token) => {
+      irRawText += token;
+      // Show live raw stream while waiting
+      output.textContent = irRawText;
+      output.scrollTop = output.scrollHeight;
+    });
+  }
+
+  function renderIRChecklist(raw) {
+    const output = document.getElementById('ir-output');
+    const metaStrip = document.getElementById('ir-meta-strip');
+    output.innerHTML = '';
+
+    // Extract incident type and severity for meta strip
+    const typeMatch = raw.match(/INCIDENT CLASSIFICATION[:\s]+(.+)/i);
+    const sevMatch  = raw.match(/SEVERITY[:\s]+\n?\s*(CRITICAL|HIGH|MEDIUM|LOW)/i);
+    if (typeMatch || sevMatch) {
+      metaStrip.style.display = 'flex';
+      const typeEl = document.getElementById('ir-type-label');
+      const sevEl  = document.getElementById('ir-sev-badge');
+      if (typeMatch) typeEl.textContent = typeMatch[1].trim().replace(/^[-–]\s*/, '');
+      if (sevMatch) {
+        const sev = sevMatch[1].toUpperCase();
+        const sevColors = { CRITICAL: '#ff2040', HIGH: 'var(--red)', MEDIUM: 'var(--yellow)', LOW: 'var(--green)' };
+        const sevBg     = { CRITICAL: 'rgba(255,32,64,0.1)', HIGH: 'rgba(255,64,96,0.1)', MEDIUM: 'rgba(240,192,64,0.1)', LOW: 'rgba(0,229,135,0.08)' };
+        sevEl.textContent = sev;
+        sevEl.style.color = sevColors[sev] || 'var(--text)';
+        sevEl.style.border = `1px solid ${sevColors[sev] || 'var(--border2)'}`;
+        sevEl.style.background = sevBg[sev] || '';
+      }
+    }
+
+    // Section headings pattern: ALL CAPS word(s) followed by colon
+    const sectionRe = /^([A-Z][A-Z\s\(\)\-\/]{3,})\s*[:\-—]\s*/m;
+    const lines = raw.split('\n');
+    let currentSection = '';
+    let currentList = null;
+
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      if (!trimmed) return;
+
+      // Section heading detection
+      if (/^[A-Z][A-Z\s\(\)\-\/]{3,}:/.test(trimmed) || /^\d+\.\s+[A-Z][A-Z\s\(\)\-\/]{3,}/.test(trimmed)) {
+        const heading = document.createElement('span');
+        heading.className = 'ir-section-heading';
+        heading.textContent = trimmed.replace(/^\d+\.\s+/, '');
+        output.appendChild(heading);
+        currentSection = trimmed;
+        currentList = null;
+        return;
+      }
+
+      // Numbered or bulleted items → interactive checkbox items
+      const isListItem = /^[\d\-\*\•]\s/.test(trimmed) || /^\d+[\.\)]\s/.test(trimmed);
+      if (isListItem) {
+        const text = trimmed.replace(/^[\d\-\*\•]+[\.\):\s]+/, '').trim();
+        const item = document.createElement('div');
+        item.className = 'ir-checklist-item';
+        item.innerHTML = `<div class="ir-checkbox"></div><span>${escHtml(text)}</span>`;
+        item.addEventListener('click', () => item.classList.toggle('done'));
+        output.appendChild(item);
+        return;
+      }
+
+      // Regular paragraph text
+      const p = document.createElement('div');
+      p.style.cssText = 'font-family:\'Share Tech Mono\',monospace;font-size:10px;color:var(--text-dim);line-height:1.7;padding:2px 0;';
+      p.textContent = trimmed;
+      output.appendChild(p);
+    });
+  }
+
+  function clearIR() {
+    document.getElementById('ir-input').value = '';
+    document.getElementById('ir-output').innerHTML = '<span style="color:var(--text-dim);">Generated checklist will appear here. Items are interactive — click to mark complete.</span>';
+    document.getElementById('ir-status').textContent = '';
+    document.getElementById('ir-status').className = 'status-line';
+    document.getElementById('ir-meta-strip').style.display = 'none';
+    irRawText = '';
+  }
+
+  function irExportText() {
+    if (!irRawText) return;
+    const blob = new Blob([irRawText], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'IR-Checklist-' + new Date().toISOString().slice(0,10) + '.txt';
+    a.click();
+  }
+
+
+  // ══ PORT SCANNER ═════════════════════════════════════════════════
+  let scanMode    = 'quick';
+  let openPorts   = [];
+
+  const MODE_DESC = {
+    quick:   'QUICK — 22 high-value service ports (SSH, HTTP, DBs, RDP...)',
+    top100:  'TOP 100 — 100 most commonly scanned ports, multithreaded',
+    full:    'FULL — All 1024 well-known ports (~5–10s with threading)',
+    stealth: 'ATTACK SURFACE — 21 ports most targeted by attackers',
+  };
+
+  function setMode(m) {
+    scanMode = m;
+    ['quick','top100','full','stealth'].forEach(id => {
+      document.getElementById('mode-' + id).classList.toggle('active', id === m);
+    });
+    document.getElementById('scan-mode-desc').textContent = MODE_DESC[m];
+  }
+
+  function startScan() {
+    const target  = document.getElementById('scan-target').value.trim();
+    const portsEl = document.getElementById('scan-ports');
+    const aiEl    = document.getElementById('scan-ai');
+    const btn     = document.getElementById('scan-btn');
+    const status  = document.getElementById('scan-status');
+    const summary = document.getElementById('scan-summary');
+
+    if (!target) {
+      status.textContent = '⚠ Enter a target IP or hostname.';
+      status.className = 'status-line err';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ SCANNING...';
+    status.textContent = 'INITIALIZING...';
+    status.className = 'status-line';
+    portsEl.innerHTML = '<span style="color:var(--text-dim);font-size:11px;font-family:\'Share Tech Mono\',monospace;">Scanning...</span>';
+    aiEl.innerHTML    = '<span style="color:var(--text-dim);font-size:11px;font-family:\'Share Tech Mono\',monospace;">AI assessment will stream after scan...</span>';
+    summary.style.display = 'none';
+    openPorts = [];
+
+    // Build port table header
+    let tableHtml = '<table class="port-table"><thead><tr><th>PORT</th><th>SERVICE</th><th>RISK</th><th>BANNER</th></tr></thead><tbody id="port-tbody"></tbody></table>';
+
+    fetch('/api/scan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ target, mode: scanMode })
+    }).then(async resp => {
+      if (!resp.ok) {
+        const err = await resp.json();
+        portsEl.innerHTML = `<span style="color:var(--red);font-size:11px;font-family:'Share Tech Mono',monospace;">✗ ${escHtml(err.error || 'Scan failed')}</span>`;
+        btn.disabled = false; btn.textContent = '▶ SCAN';
+        status.textContent = '✗ ERROR'; status.className = 'status-line err';
+        return;
+      }
+
+      portsEl.innerHTML = tableHtml;
+      const tbody = document.getElementById('port-tbody');
+      let aiText = '';
+      let aiStreaming = false;
+
+      const reader  = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = line.slice(6).trim();
+          if (data === '[DONE]') {
+            btn.disabled = false; btn.textContent = '▶ SCAN';
+            status.textContent = `✓ SCAN COMPLETE — ${openPorts.length} port(s) open`;
+            status.className = 'status-line ok';
+            if (openPorts.length === 0) {
+              portsEl.innerHTML = '<span style="color:var(--green);font-size:11px;font-family:\'Share Tech Mono\',monospace;">No open ports found in scanned range.</span>';
+            }
+            summary.style.display = 'block';
+            summary.textContent = `TARGET: ${target}  |  MODE: ${scanMode.toUpperCase()}  |  OPEN: ${openPorts.length}`;
+            return;
+          }
+          try {
+            const msg = JSON.parse(data);
+            if (msg.status) {
+              status.textContent = msg.status;
+            }
+            if (msg.port_found) {
+              const p = msg.port_found;
+              openPorts.push(p);
+              if (!tbody) { portsEl.innerHTML = tableHtml; }
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td class="port-num">${p.port}</td>
+                <td class="svc-name">${escHtml(p.service)}</td>
+                <td><span class="risk-badge risk-${p.risk}">${p.risk}</span></td>
+                <td style="color:var(--text-dim);font-size:10px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escHtml(p.banner)}">${escHtml(p.banner) || '—'}</td>`;
+              document.getElementById('port-tbody').appendChild(tr);
+              portsEl.scrollTop = portsEl.scrollHeight;
+            }
+            if (msg.ai_token) {
+              if (!aiStreaming) {
+                aiEl.innerHTML = '';
+                aiStreaming = true;
+              }
+              aiText += msg.ai_token;
+              aiEl.textContent = aiText;
+              aiEl.scrollTop = aiEl.scrollHeight;
+            }
+          } catch {}
+        }
+      }
+    }).catch(e => {
+      portsEl.innerHTML = `<span style="color:var(--red);font-size:11px;font-family:'Share Tech Mono',monospace;">✗ ${e.message}</span>`;
+      btn.disabled = false; btn.textContent = '▶ SCAN';
+      status.textContent = '✗ CONNECTION ERROR'; status.className = 'status-line err';
+    });
+  }
+
+  function clearScan() {
+    document.getElementById('scan-target').value = '';
+    document.getElementById('scan-ports').innerHTML = '<span style="color:var(--text-dim);font-size:11px;font-family:\'Share Tech Mono\',monospace;">Enter a target and press SCAN...</span>';
+    document.getElementById('scan-ai').innerHTML = '<span style="color:var(--text-dim);font-size:11px;font-family:\'Share Tech Mono\',monospace;">AI assessment streams here after scan completes...</span>';
+    document.getElementById('scan-status').textContent = '';
+    document.getElementById('scan-status').className = 'status-line';
+    document.getElementById('scan-summary').style.display = 'none';
+    openPorts = [];
+  }
+
+
   function escHtml(s) {
     return String(s)
       .replace(/&/g,'&amp;')
       .replace(/</g,'&lt;')
       .replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;');
+  }
+  function esc(s) {
+    return escHtml(s);
   }
 </script>
 </body>
